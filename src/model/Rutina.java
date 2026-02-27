@@ -14,8 +14,8 @@ public class Rutina implements Serializable {
 
     @Column(name = "name", nullable = false, unique = true, length = 50)
     private String name;
-    
-    @Column(name = "desc", nullable = false, length = 500)
+
+    @Column(name = "description", nullable = false, length = 500)
     private String desc;
 
     public Rutina() {

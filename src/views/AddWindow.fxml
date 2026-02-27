@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddWindowController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="293.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/24.0.1" fx:controller="controller.AddWindowController">
+   <children>
+      <Label layoutX="236.0" layoutY="14.0" prefHeight="26.0" prefWidth="114.0" text="Añadir rutina">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="27.0" layoutY="79.0" prefHeight="26.0" prefWidth="55.0" text="Nombre:" />
+      <TextField layoutX="86.0" layoutY="79.0" />
+      <Label layoutX="284.0" layoutY="50.0" prefHeight="26.0" prefWidth="184.0" text="Descripcion (max 500 caracteres):" />
+      <TextArea layoutX="284.0" layoutY="79.0" prefHeight="200.0" prefWidth="257.0" wrapText="true" />
+   </children>
 </AnchorPane>

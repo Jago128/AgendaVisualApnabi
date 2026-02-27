@@ -10,6 +10,11 @@ public class DBImplementation implements AgendaDAO {
     }
 
     @Override
+    public boolean deleteRoutine() {
+        return false;
+    }
+
+    @Override
     public Image fetchImg() {
         return null;
     }
