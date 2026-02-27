@@ -1,15 +1,11 @@
 package model;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javafx.scene.image.Image;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "ROUTINE")
+@Table(name = "ROUTINE_")
 public class Rutina implements Serializable {
     
     @Id
@@ -19,4 +15,7 @@ public class Rutina implements Serializable {
     
     @Column(name = "name", nullable = false, unique = true, length = 50)
     private String name;
+    
+    @Transient
+    private Image picto;
 }
