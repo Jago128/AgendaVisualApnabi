@@ -7,12 +7,11 @@ import org.hibernate.cfg.Configuration;
  * Clase Singleton para gestionar la SessionFactory de Hibernate.
  * Inicializa y proporciona acceso a la fábrica de sesiones de forma centralizada.
  * 
- * @author Igor
  * @version 1.0
  */
 public class HibernateSession {
     
-    /** Instancia única de SessionFactory, inicializada estáticamente. */
+    /** Instancia única de SessionFactory, inicializada estáticamente.*/
     private static SessionFactory sessionFactory;
     
     /**
