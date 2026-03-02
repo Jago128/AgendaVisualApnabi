@@ -1,16 +1,19 @@
 package controller;
 
 import exception.EmailFormatException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
+import javafx.fxml.Initializable;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Gender;
 
-public class UserConfigWindowController implements Initializable {
+public class SignUpWindowController implements Initializable {
 
     @FXML
     private TextField textFieldName;
@@ -39,6 +42,12 @@ public class UserConfigWindowController implements Initializable {
     @FXML
     private CheckBox cbShowPass;
 
+    @FXML
+    private Button btnSignUp;
+
+    @FXML
+    private Button btnLogin;
+
     private Controller cont;
 
     public void setController(Controller cont) {
@@ -58,6 +67,11 @@ public class UserConfigWindowController implements Initializable {
         }
     }
 
+    @FXML
+    private void signUp(ActionEvent event) {
+        //DB method
+    }
+
     public void emailFormatCheck(String email) throws EmailFormatException {
         Pattern modelo = Pattern.compile(
                 "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
@@ -68,14 +82,18 @@ public class UserConfigWindowController implements Initializable {
     }
 
     @FXML
-    private void modify(ActionEvent event) {
-        //DB method
-    }
-
-    @FXML
-    private void exit(ActionEvent event) {
-        Stage current = (Stage) comboBoxGender.getScene().getWindow();
-        current.close();
+    private void loginWindow(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Ventana Login");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

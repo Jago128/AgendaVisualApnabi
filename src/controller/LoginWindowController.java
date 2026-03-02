@@ -8,6 +8,7 @@ import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Profile;
 
 public class LoginWindowController implements Initializable {
 
@@ -26,6 +27,9 @@ public class LoginWindowController implements Initializable {
     @FXML
     private Button btnLogin;
 
+    @FXML
+    private Button btnSignUp;
+
     private final Controller cont = new Controller();
 
     @FXML
@@ -43,8 +47,29 @@ public class LoginWindowController implements Initializable {
 
     @FXML
     private void login(ActionEvent event) {
+        //DB method
+        Profile profile;
+        
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainWindow.fxml"));
+            Parent root = loader.load();
+            MainWindowController mainCont = loader.getController();
+            mainCont.setController(cont);
+            
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Ventana Principal");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void signUpWindow(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignUpWindow.fxml"));
             Parent root = loader.load();
             MainWindowController mainCont = loader.getController();
             mainCont.setController(cont);
@@ -60,6 +85,5 @@ public class LoginWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
     }
 }

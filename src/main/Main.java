@@ -3,17 +3,16 @@ package main;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.stage.Stage;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import model.HibernateSession;
+import org.hibernate.*;
 
 public class Main extends Application {
 
 private static void CreateTableHibernate() {
         try {
-            SessionFactory sessionFactory = model.HibernateSession.getSessionFactory();
+            SessionFactory sessionFactory = HibernateSession.getSessionFactory();
             Session session = sessionFactory.openSession();
             session.close();
             

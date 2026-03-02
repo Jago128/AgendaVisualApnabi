@@ -7,19 +7,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Rutina;
+import model.*;
 
 public class MainWindowController implements Initializable {
-
-    @FXML
-    private Button logOutBtn;
 
     @FXML
     private Button tempBtn;
 
     @FXML
-    private TableView<Rutina> tableAgendas;
+    private TableView<?> tableAgendas;
 
     @FXML
     private TableColumn<Rutina, String> colName;
@@ -35,16 +33,75 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private Button deleteBtn;
-    
+
+    @FXML
+    private MenuButton userMenu;
+
+    @FXML
+    private MenuItem modifyUser;
+
+    @FXML
+    private MenuItem logOut;
+
+    @FXML
+    private MenuItem deleteAcc;
+
     private Controller cont;
+    private Profile user;
 
     public void setController(Controller cont) {
         this.cont = cont;
+        userMenu.setText(user.getUsername());
+    }
+
+    public void setProfile(Profile profile) {
+        this.user = profile;
+
     }
 
     @FXML
     private void debug(ActionEvent event) {
+        //API
+    }
 
+    @FXML
+    private void modifyUser(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserConfigWindow.fxml"));
+            Parent root = loader.load();
+            AddWindowController addCont = loader.getController();
+            addCont.setController(cont);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Ventana Añadir");
+            stage.setScene(scene);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void deleteAcc(ActionEvent event) {
+        //Window here
+    }
+
+    @FXML
+    private void logOut(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
+            Parent root = loader.load();
+            AddWindowController addCont = loader.getController();
+            addCont.setController(cont);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Ventana Añadir");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -83,10 +140,11 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void delete(ActionEvent event) {
-
+        //DB method
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
+
 }
