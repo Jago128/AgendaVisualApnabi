@@ -10,6 +10,7 @@ import javafx.fxml.*;
 import javafx.fxml.Initializable;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.*;
 
@@ -96,6 +97,16 @@ public class SignUpWindowController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    private void showAlert(AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        if (header == null || !header.isEmpty()) {
+            alert.setHeaderText(header);
+        }
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     @Override

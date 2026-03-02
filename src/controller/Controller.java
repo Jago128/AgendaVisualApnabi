@@ -39,8 +39,8 @@ public class Controller {
         return dao.getRoutines();
     }
 
-    public boolean addRoutine(String name, String instruction) {
-        return dao.addRoutine(name, instruction);
+    public boolean addRoutine(String title, String person, String instruction) {
+        return dao.addRoutine(title, person, instruction);
     }
 
     public boolean modifyRoutine(Rutina routine) {

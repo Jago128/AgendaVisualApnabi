@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.*;
 import model.*;
 
@@ -16,11 +17,14 @@ public class MainWindowController implements Initializable {
     private Button tempBtn;
 
     @FXML
-    private TableView<Rutina> tableAgendas;
+    private TableView<Rutina> tableAgenda;
 
     @FXML
     private TableColumn<Rutina, String> colTitle;
-
+    
+    @FXML
+    private TableColumn<Rutina, String> colPersona;
+    
     @FXML
     private TableColumn<Rutina, String> colInstruction;
 
@@ -98,7 +102,7 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Ventana Login");
             stage.setScene(scene);
             stage.show();
-            Stage current = (Stage) tableAgendas.getScene().getWindow();
+            Stage current = (Stage) tableAgenda.getScene().getWindow();
             current.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,6 +150,16 @@ public class MainWindowController implements Initializable {
     @FXML
     private void delete(ActionEvent event) {
         //DB method
+    }
+
+    private void showAlert(AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        if (header == null || !header.isEmpty()) {
+            alert.setHeaderText(header);
+        }
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     @Override

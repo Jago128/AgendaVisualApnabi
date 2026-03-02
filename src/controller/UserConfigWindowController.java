@@ -7,6 +7,7 @@ import java.util.regex.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.Gender;
 
@@ -76,6 +77,16 @@ public class UserConfigWindowController implements Initializable {
     private void exit(ActionEvent event) {
         Stage current = (Stage) comboBoxGender.getScene().getWindow();
         current.close();
+    }
+    
+    private void showAlert(AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        if (header == null || !header.isEmpty()) {
+            alert.setHeaderText(header);
+        }
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     @Override

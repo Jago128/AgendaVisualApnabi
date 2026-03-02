@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.Profile;
 
@@ -49,13 +50,13 @@ public class LoginWindowController implements Initializable {
     private void login(ActionEvent event) {
         //DB method
         Profile profile;
-        
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainWindow.fxml"));
             Parent root = loader.load();
             MainWindowController mainCont = loader.getController();
             mainCont.setController(cont);
-            
+
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setTitle("Ventana Principal");
@@ -83,6 +84,16 @@ public class LoginWindowController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showAlert(AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        if (header == null || !header.isEmpty()) {
+            alert.setHeaderText(header);
+        }
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     @Override

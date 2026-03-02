@@ -20,7 +20,7 @@ public interface AgendaDAO {
     
     public List<Rutina> getRoutines();
     
-    public boolean addRoutine(String name, String instruction);
+    public boolean addRoutine(String title, String person, String instruction);
     
     public boolean modifyRoutine(Rutina routine);
     

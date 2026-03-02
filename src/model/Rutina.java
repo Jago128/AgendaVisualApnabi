@@ -14,6 +14,9 @@ public class Rutina implements Serializable {
 
     @Column(name = "title", nullable = false, unique = true, length = 50)
     private String title;
+    
+    @Column(name = "person", nullable = false, unique = true, length = 100)
+    private String person;
 
     @Column(name = "instruction", nullable = false, length = 500)
     private String instruction;
@@ -24,11 +27,13 @@ public class Rutina implements Serializable {
 
     public Rutina() {
         this.title = "";
+        this.person = "";
         this.instruction = "";
     }
 
-    public Rutina(String name, String instruction) {
-        this.title = name;
+    public Rutina(String title, String person, String instruction) {
+        this.title = title;
+        this.person = person;
         this.instruction = instruction;
     }
 
@@ -46,6 +51,14 @@ public class Rutina implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
     }
 
     public String getInstruction() {

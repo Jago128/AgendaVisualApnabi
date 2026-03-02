@@ -5,11 +5,16 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 
 public class AddWindowController implements Initializable {
 
     @FXML
     private TextField textFieldTitle;
+
+    @FXML
+    private TextField textFieldPerson;
 
     @FXML
     private TextArea textAreaInstruction;
@@ -25,7 +30,46 @@ public class AddWindowController implements Initializable {
 
     @FXML
     private void add(ActionEvent event) {
-        //DB
+        String title = textFieldTitle.getText();
+        String person = textFieldPerson.getText();
+        String instruction = textAreaInstruction.getText();
+
+        if (title == null || title.trim().isEmpty() || instruction == null || instruction.trim().isEmpty()) {
+            showAlert(AlertType.ERROR, "Error de validacion", "Faltan campos", "Por favor, rellena todos los campos.");
+        } else {
+            boolean result = cont.addRoutine(title, person, instruction);
+            if (result) {
+                Alert alert = showAlert(AlertType.CONFIRMATION, "Rutina añadida correctamente",
+                        "La rutina con el titulo " + title + " ha sido añadida correctamente.", "¿Quieres añadir mas rutinas?");
+                if (alert.getResult().equals(ButtonType.OK)) {
+                    textFieldTitle.setText("");
+                    textFieldPerson.setText("");
+                    textAreaInstruction.setText("");
+                } else if (alert.getResult().equals(ButtonType.CANCEL)) {
+                    Stage stage = (Stage) btnAdd.getScene().getWindow();
+                    stage.close();
+                }
+
+            } else {
+                showAlert(AlertType.ERROR, "ERROR", "",
+                        "Ha occurrido un error al añadir la rutina. Puede que ya exista en la base de datos una rutina con el mismo titulo para la misma persona.");
+            }
+        }
+    }
+
+    private Alert showAlert(AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        if (header == null || !header.isEmpty()) {
+            alert.setHeaderText(header);
+        }
+        alert.setContentText(content);
+        alert.showAndWait();
+        if (type == AlertType.CONFIRMATION) {
+            return alert;
+        }
+
+        return null;
     }
 
     @Override

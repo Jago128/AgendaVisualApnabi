@@ -73,7 +73,7 @@ public class DBImplementation implements AgendaDAO {
             session.save(newUser);
             transaction.commit();
 
-            System.out.println("El usuario" + username + "se ha registrado correctamente.");
+            System.out.println("El usuario " + username + " se ha registrado correctamente.");
             return true;
 
         } catch (Exception e) {
@@ -161,7 +161,7 @@ public class DBImplementation implements AgendaDAO {
             session.save(newAdmin);
             transaction.commit();
 
-            System.out.println("Admin registrado exitosamente: " + username);
+            System.out.println("El admin " + username + " ha sido registrado correctamente.");
             return true;
 
         } catch (Exception e) {
@@ -193,7 +193,7 @@ public class DBImplementation implements AgendaDAO {
             User user = query.uniqueResult();
 
             if (user == null) {
-                System.out.println("Usuario no encontrado en la base de datos: " + username);
+                System.out.println("El usuario proveeido no se ha encontrado.");
                 return false;
             }
 
@@ -206,7 +206,7 @@ public class DBImplementation implements AgendaDAO {
             session.update(user);
             transaction.commit();
 
-            System.out.println("Usuario modificado exitosamente: " + username);
+            System.out.println("El usuario " + username + " ha sido modificado correctamente.");
             return true;
 
         } catch (Exception e) {
@@ -238,12 +238,12 @@ public class DBImplementation implements AgendaDAO {
             User user = query.uniqueResult();
 
             if (user == null) {
-                System.out.println("El usuario no se ha encontrado.");
+                System.out.println("El usuario proveeido no se ha encontrado.");
                 return false;
             }
 
             if (!user.getPassword().equals(password)) {
-                System.out.println("Error: Contraseña incorrecta.");
+                System.out.println("La contraseña introducida es incorrecta.");
                 return false;
             }
 
@@ -291,26 +291,26 @@ public class DBImplementation implements AgendaDAO {
     }
 
     @Override
-    public boolean addRoutine(String title, String instruction) {
+    public boolean addRoutine(String title, String person, String instruction) {
         Session session = HibernateSession.getSessionFactory().openSession();
         Transaction transaction = null;
 
         try {
             transaction = session.beginTransaction();
 
-            String checkHql = "SELECT COUNT(r) FROM Rutina r WHERE r.name = :name";
+            String checkHql = "SELECT COUNT(r) FROM Rutina r WHERE r.title = :title AND r.person = :person";
             Query<Long> checkQuery = session.createQuery(checkHql, Long.class);
             checkQuery.setParameter("name", title);
+            checkQuery.setParameter("person", person);
             Long count = checkQuery.uniqueResult();
 
             if (count > 0) {
-                System.out.println("Hay una rutina con el mismo titulo.");
+                System.out.println("Hay una rutina con el mismo titulo y persona asociada.");
                 return false;
             }
 
-            Rutina routine = new Rutina(title, instruction);
+            Rutina routine = new Rutina(title, person, instruction);
 
-            // Guardar en la base de datos
             session.save(routine);
             transaction.commit();
 
@@ -374,7 +374,7 @@ public class DBImplementation implements AgendaDAO {
                 System.out.println("La rutina " + routineToDelete.getTitle() + " ha sido eliminada correctamente.");
                 return true;
             } else {
-                System.out.println("La rutina proveida no existe.");
+                System.out.println("La rutina proveeida no existe.");
                 return false;
             }
 

@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 
 public class ModifyWindowController implements Initializable {
 
@@ -26,6 +27,16 @@ public class ModifyWindowController implements Initializable {
     @FXML
     private void modify(ActionEvent event) {
         //DB
+    }
+    
+    private void showAlert(AlertType type, String title, String header, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        if (header == null || !header.isEmpty()) {
+            alert.setHeaderText(header);
+        }
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     @Override
