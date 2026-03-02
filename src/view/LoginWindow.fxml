@@ -17,10 +17,10 @@
          </font>
       </Label>
       <Label layoutX="50.0" layoutY="60.0" prefHeight="26.0" prefWidth="54.0" text="Nombre:" />
-      <TextField fx:id="nameField" layoutX="120.0" layoutY="60.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu nombre" />
+      <TextField fx:id="textfieldName" layoutX="120.0" layoutY="60.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu nombre" />
       <Label layoutX="43.0" layoutY="102.0" prefHeight="26.0" prefWidth="68.0" text="Contraseña:" />
-      <PasswordField fx:id="passField" layoutX="120.0" layoutY="102.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu contraseña" />
-      <TextField fx:id="passFieldVisible" layoutX="120.0" layoutY="118.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu contraseña" visible="false" />
+      <PasswordField fx:id="passwordField" layoutX="120.0" layoutY="102.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu contraseña" />
+      <TextField fx:id="passwordFieldVisible" layoutX="120.0" layoutY="102.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu contraseña" visible="false" />
       <CheckBox fx:id="cbShowPass" layoutX="105.0" layoutY="135.0" mnemonicParsing="false" onAction="#showPass" prefHeight="26.0" prefWidth="138.0" text="Mostrar contraseña" />
       <Button fx:id="btnLogin" layoutX="111.0" layoutY="168.0" mnemonicParsing="false" onAction="#login" prefHeight="34.0" prefWidth="119.0" text="Iniciar sesion" />
       <Label layoutX="77.0" layoutY="208.0" prefHeight="26.0" prefWidth="106.0" text="¿No tienes cuenta?" />

@@ -42,9 +42,9 @@ public class AddWindowController implements Initializable {
                 Alert alert = showAlert(AlertType.CONFIRMATION, "Rutina añadida correctamente",
                         "La rutina con el titulo " + title + " ha sido añadida correctamente.", "¿Quieres añadir mas rutinas?");
                 if (alert.getResult().equals(ButtonType.OK)) {
-                    textFieldTitle.setText("");
-                    textFieldPerson.setText("");
-                    textAreaInstruction.setText("");
+                    textFieldTitle.clear();
+                    textFieldPerson.clear();
+                    textAreaInstruction.clear();
                 } else if (alert.getResult().equals(ButtonType.CANCEL)) {
                     Stage stage = (Stage) btnAdd.getScene().getWindow();
                     stage.close();
@@ -60,9 +60,11 @@ public class AddWindowController implements Initializable {
     private Alert showAlert(AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
+
         if (header == null || !header.isEmpty()) {
             alert.setHeaderText(header);
         }
+
         alert.setContentText(content);
         alert.showAndWait();
         if (type == AlertType.CONFIRMATION) {

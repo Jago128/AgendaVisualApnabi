@@ -14,12 +14,12 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="16.0" layoutY="54.0" prefHeight="26.0" prefWidth="55.0" text="Titulo:" />
-      <TextField fx:id="textFieldTitle" layoutX="75.0" layoutY="54.0" />
+      <Label layoutX="82.0" layoutY="55.0" prefHeight="26.0" prefWidth="41.0" text="Titulo:" />
+      <TextField fx:id="textFieldTitle" layoutX="127.0" layoutY="54.0" />
       <TextArea fx:id="textAreaInstruction" layoutX="16.0" layoutY="150.0" prefHeight="200.0" prefWidth="257.0" wrapText="true" />
       <Label layoutX="16.0" layoutY="123.0" prefHeight="26.0" prefWidth="184.0" text="Instruccion (max 500 caracteres):" />
       <Button fx:id="btnAdd" layoutX="82.0" layoutY="357.0" mnemonicParsing="false" onAction="#add" prefHeight="41.0" prefWidth="130.0" text="Añadir rutina" />
-      <Label layoutX="16.0" layoutY="87.0" prefHeight="26.0" prefWidth="55.0" text="Persona:" />
-      <TextField fx:id="textFieldPerson" layoutX="75.0" layoutY="87.0" />
+      <Label layoutX="24.0" layoutY="86.0" prefHeight="26.0" prefWidth="97.0" text="Nombre persona:" />
+      <TextField fx:id="textFieldPerson" layoutX="127.0" layoutY="87.0" />
    </children>
 </AnchorPane>

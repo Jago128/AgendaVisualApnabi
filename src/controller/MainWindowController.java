@@ -56,7 +56,7 @@ public class MainWindowController implements Initializable {
         this.cont = cont;
     }
 
-    public void setProfile(Profile profile) {
+    public void setUser(Profile profile) {
         this.user = profile;
         userMenu.setText(user.getUsername());
     }
