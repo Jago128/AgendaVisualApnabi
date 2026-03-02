@@ -43,11 +43,11 @@ public class Controller {
         return dao.addRoutine(name, instruction);
     }
 
-    public boolean modifyRoutine(String name, String instruction) {
-        return dao.modifyRoutine(name, instruction);
+    public boolean modifyRoutine(Rutina routine) {
+        return dao.modifyRoutine(routine);
     }
 
-    public boolean deleteRoutine(String name) {
-        return dao.deleteRoutine(name);
+    public boolean deleteRoutine(Rutina routine) {
+        return dao.deleteRoutine(routine);
     }
 }

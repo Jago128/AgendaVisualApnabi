@@ -19,7 +19,7 @@ public class MainWindowController implements Initializable {
     private TableView<Rutina> tableAgendas;
 
     @FXML
-    private TableColumn<Rutina, String> colName;
+    private TableColumn<Rutina, String> colTitle;
 
     @FXML
     private TableColumn<Rutina, String> colInstruction;
@@ -59,7 +59,7 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void debug(ActionEvent event) {
-        //API
+        //API check
     }
 
     @FXML

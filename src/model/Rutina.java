@@ -12,8 +12,8 @@ public class Rutina implements Serializable {
     @Column(name = "routine_code")
     private int routineCode;
 
-    @Column(name = "name", nullable = false, unique = true, length = 50)
-    private String name;
+    @Column(name = "title", nullable = false, unique = true, length = 50)
+    private String title;
 
     @Column(name = "instruction", nullable = false, length = 500)
     private String instruction;
@@ -23,12 +23,12 @@ public class Rutina implements Serializable {
     private User user;
 
     public Rutina() {
-        this.name = "";
+        this.title = "";
         this.instruction = "";
     }
 
     public Rutina(String name, String instruction) {
-        this.name = name;
+        this.title = name;
         this.instruction = instruction;
     }
 
@@ -40,12 +40,12 @@ public class Rutina implements Serializable {
         this.routineCode = routineCode;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getInstruction() {
@@ -66,6 +66,6 @@ public class Rutina implements Serializable {
 
     @Override
     public String toString() {
-        return "Rutina{" + "routineCode=" + routineCode + ", name=" + name + ", instruction=" + instruction + ", user=" + user + '}';
+        return "Rutina{" + "routineCode=" + routineCode + ", title=" + title + ", instruction=" + instruction + ", user=" + user + '}';
     }
 }

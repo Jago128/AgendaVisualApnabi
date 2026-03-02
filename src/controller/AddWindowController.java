@@ -9,13 +9,13 @@ import javafx.scene.control.*;
 public class AddWindowController implements Initializable {
 
     @FXML
-    private TextField textFieldName;
+    private TextField textFieldTitle;
 
     @FXML
     private TextArea textAreaInstruction;
 
     @FXML
-    private Button btnModify;
+    private Button btnAdd;
 
     private Controller cont;
 
@@ -24,7 +24,8 @@ public class AddWindowController implements Initializable {
     }
 
     @FXML
-    private void modify(ActionEvent event) {
+    private void add(ActionEvent event) {
+        //DB
     }
 
     @Override

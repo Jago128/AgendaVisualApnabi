@@ -30,7 +30,7 @@
       <Button fx:id="tempBtn" layoutX="22.0" layoutY="71.0" mnemonicParsing="false" onAction="#debug" prefHeight="15.0" prefWidth="186.0" text="(DEBUG) Check API availability" />
       <TableView fx:id="tableAgendas" layoutX="19.0" layoutY="119.0" prefHeight="316.0" prefWidth="632.0">
         <columns>
-          <TableColumn fx:id="colName" prefWidth="315.20000076293945" text="Nombre" />
+          <TableColumn fx:id="colTitle" prefWidth="315.20000076293945" text="Titulo" />
           <TableColumn fx:id="colInstruction" minWidth="0.0" prefWidth="315.99993896484375" text="Instruccion" />
         </columns>
       </TableView>

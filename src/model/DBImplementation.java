@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.*;
 import org.hibernate.query.Query;
@@ -31,10 +32,10 @@ public class DBImplementation implements AgendaDAO {
                 return admin;
             }
 
-            System.out.println("Usuario no encontrado en la base de datos");
+            System.out.println("El usuario especificado no existe.");
 
         } catch (Exception e) {
-            System.out.println("Database query error: " + e.getMessage());
+            System.out.println("Error de base de datos al intentar el inicio de sesion: " + e.getMessage());
             e.printStackTrace();
         } finally {
             if (session != null && session.isOpen()) {
@@ -58,7 +59,7 @@ public class DBImplementation implements AgendaDAO {
             Long count = checkQuery.uniqueResult();
 
             if (count > 0) {
-                System.out.println("Username ya existe");
+                System.out.println("Ya existe un usuario con el mismo nombre.");
                 return false;
             }
 
@@ -72,14 +73,14 @@ public class DBImplementation implements AgendaDAO {
             session.save(newUser);
             transaction.commit();
 
-            System.out.println("Usuario registrado exitosamente: " + username);
+            System.out.println("El usuario" + username + "se ha registrado correctamente.");
             return true;
 
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println("Database error on signup: " + e.getMessage());
+            System.out.println("Error de base de datos al intentar registrar un usuario: " + e.getMessage());
             e.printStackTrace();
             return false;
         } finally {
@@ -102,7 +103,7 @@ public class DBImplementation implements AgendaDAO {
             return count > 0;
 
         } catch (Exception e) {
-            System.out.println("Error verificando existencia de usuario: " + e.getMessage());
+            System.out.println("Error de base de datos al intentar comprobar la existencia un usuario: " + e.getMessage());
             return false;
         } finally {
             if (session != null && session.isOpen()) {
@@ -123,7 +124,7 @@ public class DBImplementation implements AgendaDAO {
             return query.uniqueResult();
 
         } catch (Exception e) {
-            System.out.println("Error obteniendo usuario: " + e.getMessage());
+            System.out.println("Error de base de datos al intentar obtener un usuario: " + e.getMessage());
             return null;
         } finally {
             if (session != null && session.isOpen()) {
@@ -146,7 +147,7 @@ public class DBImplementation implements AgendaDAO {
             Long count = checkQuery.uniqueResult();
 
             if (count > 0) {
-                System.out.println("Admin ya existe: " + username);
+                System.out.println("Ya existe un admin con el mismo nombre.");
                 return false;
             }
 
@@ -167,7 +168,7 @@ public class DBImplementation implements AgendaDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println("Database error on creating admin: " + e.getMessage());
+            System.out.println("Error de base de datos al intentar crear un admin: " + e.getMessage());
             e.printStackTrace();
             return false;
         } finally {
@@ -212,7 +213,7 @@ public class DBImplementation implements AgendaDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println("Database error on modifying user: " + e.getMessage());
+            System.out.println("Error de base de datos al intentar modificar un usuario: " + e.getMessage());
             e.printStackTrace();
             return false;
         } finally {
@@ -237,26 +238,26 @@ public class DBImplementation implements AgendaDAO {
             User user = query.uniqueResult();
 
             if (user == null) {
-                System.out.println("Usuario no encontrado: " + username);
+                System.out.println("El usuario no se ha encontrado.");
                 return false;
             }
 
             if (!user.getPassword().equals(password)) {
-                System.out.println("Contraseña incorrecta para usuario: " + username);
+                System.out.println("Error: Contraseña incorrecta.");
                 return false;
             }
 
             session.delete(user);
             transaction.commit();
 
-            System.out.println("Usuario eliminado exitosamente: " + username);
+            System.out.println("El usuario " + username + " ha sido eliminado correctamente.");
             return true;
 
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println("Database error on deleting user: " + e.getMessage());
+            System.out.println("Error de base de datos al intentar borrar un usuario: " + e.getMessage());
             e.printStackTrace();
             return false;
         } finally {
@@ -268,11 +269,29 @@ public class DBImplementation implements AgendaDAO {
 
     @Override
     public List<Rutina> getRoutines() {
-        return null;
+        Session session = HibernateSession.getSessionFactory().openSession();
+        List<Rutina> routines = new ArrayList<>();
+
+        try {
+            String hql = "FROM Rutina r ORDER BY r.name ASC";
+            Query<Rutina> query = session.createQuery(hql, Rutina.class);
+
+            routines = query.getResultList();
+            System.out.println("Total de rutinas encontradas: " + routines.size());
+
+        } catch (Exception e) {
+            System.out.println("Error de base de datos al intentar obtener las rutinas: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return routines;
     }
 
     @Override
-    public boolean addRoutine(String name, String instruction) {
+    public boolean addRoutine(String title, String instruction) {
         Session session = HibernateSession.getSessionFactory().openSession();
         Transaction transaction = null;
 
@@ -281,28 +300,28 @@ public class DBImplementation implements AgendaDAO {
 
             String checkHql = "SELECT COUNT(r) FROM Rutina r WHERE r.name = :name";
             Query<Long> checkQuery = session.createQuery(checkHql, Long.class);
-            checkQuery.setParameter("name", name);
+            checkQuery.setParameter("name", title);
             Long count = checkQuery.uniqueResult();
 
             if (count > 0) {
-                System.out.println("Game already exists");
+                System.out.println("Hay una rutina con el mismo titulo.");
                 return false;
             }
 
-            Rutina routine = new Rutina(name, instruction);
+            Rutina routine = new Rutina(title, instruction);
 
             // Guardar en la base de datos
             session.save(routine);
             transaction.commit();
 
-            System.out.println("Routine added correctly: " + routine);
+            System.out.println("La rutina con el titulo " + routine.getTitle() + " ha sido añadida correctamente.");
             return true;
 
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.out.println("Database error on routine creation: " + e.getMessage());
+            System.out.println("Error de base de datos al intentar añadir una rutina: " + e.getMessage());
             e.printStackTrace();
             return false;
         } finally {
@@ -313,12 +332,63 @@ public class DBImplementation implements AgendaDAO {
     }
 
     @Override
-    public boolean modifyRoutine(String name, String instruction) {
-        return false;
+    public boolean modifyRoutine(Rutina routine) {
+        Session session = HibernateSession.getSessionFactory().openSession();
+        Transaction transaction = null;
+
+        try {
+            transaction = session.beginTransaction();
+            session.update(routine);
+            transaction.commit();
+
+            System.out.println("La rutina con el titulo " + routine.getTitle() + " ha sido modificada correctamente.");
+            return true;
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.out.println("Error de base de datos al intentar modificar una rutina: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
     }
 
     @Override
-    public boolean deleteRoutine(String name) {
-        return false;
+    public boolean deleteRoutine(Rutina routine) {
+        Session session = HibernateSession.getSessionFactory().openSession();
+        Transaction transaction = null;
+
+        try {
+            transaction = session.beginTransaction();
+
+            Rutina routineToDelete = session.get(Rutina.class, routine.getRoutineCode());
+
+            if (routineToDelete != null) {
+                session.delete(routineToDelete);
+                transaction.commit();
+                System.out.println("La rutina " + routineToDelete.getTitle() + " ha sido eliminada correctamente.");
+                return true;
+            } else {
+                System.out.println("La rutina proveida no existe.");
+                return false;
+            }
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.out.println("Error de base de datos al intentar borrar rutina: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
     }
 }

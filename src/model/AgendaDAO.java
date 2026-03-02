@@ -22,7 +22,7 @@ public interface AgendaDAO {
     
     public boolean addRoutine(String name, String instruction);
     
-    public boolean modifyRoutine(String name, String instruction);
+    public boolean modifyRoutine(Rutina routine);
     
-    public boolean deleteRoutine(String name);
+    public boolean deleteRoutine(Rutina routine);
 }
