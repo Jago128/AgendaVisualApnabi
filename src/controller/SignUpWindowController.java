@@ -11,7 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import model.Gender;
+import model.*;
 
 public class SignUpWindowController implements Initializable {
 
@@ -91,6 +91,8 @@ public class SignUpWindowController implements Initializable {
             stage.setTitle("Ventana Login");
             stage.setScene(scene);
             stage.show();
+            Stage current = (Stage) btnLogin.getScene().getWindow();
+            current.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -7,29 +7,29 @@ import javax.persistence.*;
 @PrimaryKeyJoinColumn(name = "user_code", referencedColumnName = "user_code")
 public class Admin extends Profile {
 
-    @Column(name = "name", nullable = false, length = 40)
-    private String currentAgenda;
+    @Column(name = "currentAcc", nullable = false, length = 40)
+    private String currentAcc;
 
     public Admin() {
         super();
-        this.currentAgenda = "";
+        this.currentAcc = "";
     }
 
-    public Admin(String currentAgenda, String username, String surname, String password, String email) {
+    public Admin(String currentAcc, String username, String surname, String password, String email) {
         super(username, surname, password, email);
-        this.currentAgenda = currentAgenda;
+        this.currentAcc = currentAcc;
     }
 
-    public String getCurrentAgenda() {
-        return currentAgenda;
+    public String getCurrentAcc() {
+        return currentAcc;
     }
 
-    public void setCurrentAgenda(String currentAgenda) {
-        this.currentAgenda = currentAgenda;
+    public void setCurrentAcc(String currentAcc) {
+        this.currentAcc = currentAcc;
     }
 
     @Override
     public String toString() {
-        return super.toString() + "Admin{" + "currentAgenda=" + currentAgenda + '}';
+        return super.toString() + "Admin{" + "currentAcc=" + currentAcc + '}';
     }
 }

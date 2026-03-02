@@ -41,6 +41,9 @@
         <property name="hibernate.current_session_context_class">thread</property>
         
         <!-- Mapeo de las entidades -->
+        <mapping class="model.Profile"/>
+        <mapping class="model.User"/>
+        <mapping class="model.Admin"/>
         <mapping class="model.Rutina"/>
     </session-factory>
 </hibernate-configuration>

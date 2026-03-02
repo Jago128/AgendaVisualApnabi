@@ -7,8 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.stage.*;
 import model.*;
 
 public class MainWindowController implements Initializable {
@@ -17,22 +16,13 @@ public class MainWindowController implements Initializable {
     private Button tempBtn;
 
     @FXML
-    private TableView<?> tableAgendas;
+    private TableView<Rutina> tableAgendas;
 
     @FXML
     private TableColumn<Rutina, String> colName;
 
     @FXML
-    private TableColumn<Rutina, ?> colPH;
-
-    @FXML
-    private Button addBtn;
-
-    @FXML
-    private Button modifyBtn;
-
-    @FXML
-    private Button deleteBtn;
+    private TableColumn<Rutina, String> colInstruction;
 
     @FXML
     private MenuButton userMenu;
@@ -46,17 +36,25 @@ public class MainWindowController implements Initializable {
     @FXML
     private MenuItem deleteAcc;
 
+    @FXML
+    private Button btnAdd;
+
+    @FXML
+    private Button btnModify;
+
+    @FXML
+    private Button btnDelete;
+
     private Controller cont;
     private Profile user;
 
     public void setController(Controller cont) {
         this.cont = cont;
-        userMenu.setText(user.getUsername());
     }
 
     public void setProfile(Profile profile) {
         this.user = profile;
-
+        userMenu.setText(user.getUsername());
     }
 
     @FXML
@@ -76,6 +74,7 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Ventana Añadir");
             stage.setScene(scene);
             stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,9 +95,11 @@ public class MainWindowController implements Initializable {
             addCont.setController(cont);
             Scene scene = new Scene(root);
             Stage stage = new Stage();
-            stage.setTitle("Ventana Añadir");
+            stage.setTitle("Ventana Login");
             stage.setScene(scene);
             stage.show();
+            Stage current = (Stage) tableAgendas.getScene().getWindow();
+            current.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,6 +116,8 @@ public class MainWindowController implements Initializable {
             Stage stage = new Stage();
             stage.setTitle("Ventana Añadir");
             stage.setScene(scene);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -132,6 +135,8 @@ public class MainWindowController implements Initializable {
             Stage stage = new Stage();
             stage.setTitle("Ventana Modificar");
             stage.setScene(scene);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

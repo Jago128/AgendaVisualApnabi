@@ -78,6 +78,8 @@ public class LoginWindowController implements Initializable {
             stage.setTitle("Ventana Principal");
             stage.setScene(scene);
             stage.show();
+            Stage current = (Stage) btnSignUp.getScene().getWindow();
+            current.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

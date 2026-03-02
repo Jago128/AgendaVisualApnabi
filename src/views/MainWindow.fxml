@@ -30,21 +30,21 @@
       <Button fx:id="tempBtn" layoutX="22.0" layoutY="71.0" mnemonicParsing="false" onAction="#debug" prefHeight="15.0" prefWidth="186.0" text="(DEBUG) Check API availability" />
       <TableView fx:id="tableAgendas" layoutX="19.0" layoutY="119.0" prefHeight="316.0" prefWidth="632.0">
         <columns>
-          <TableColumn fx:id="colName" prefWidth="127.20001602172852" text="Nombre" />
-          <TableColumn fx:id="colPH" prefWidth="83.20001220703125" text="[PH]" />
+          <TableColumn fx:id="colName" prefWidth="315.20000076293945" text="Nombre" />
+          <TableColumn fx:id="colInstruction" minWidth="0.0" prefWidth="315.99993896484375" text="Instruccion" />
         </columns>
       </TableView>
-      <Button fx:id="addBtn" layoutX="22.0" layoutY="461.0" mnemonicParsing="false" onAction="#add" prefHeight="35.0" prefWidth="186.0" text="Añadir rutina">
+      <Button fx:id="btnAdd" layoutX="22.0" layoutY="461.0" mnemonicParsing="false" onAction="#add" prefHeight="35.0" prefWidth="186.0" text="Añadir rutina">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="modifyBtn" layoutX="237.0" layoutY="461.0" mnemonicParsing="false" onAction="#modify" prefHeight="40.0" prefWidth="186.0" text="Modificar rutina">
+      <Button fx:id="btnModify" layoutX="237.0" layoutY="461.0" mnemonicParsing="false" onAction="#modify" prefHeight="40.0" prefWidth="186.0" text="Modificar rutina">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="deleteBtn" layoutX="458.0" layoutY="461.0" mnemonicParsing="false" onAction="#delete" prefHeight="40.0" prefWidth="186.0" text="Borrar rutina">
+      <Button fx:id="btnDelete" layoutX="458.0" layoutY="461.0" mnemonicParsing="false" onAction="#delete" prefHeight="40.0" prefWidth="186.0" text="Borrar rutina">
          <font>
             <Font size="18.0" />
          </font>

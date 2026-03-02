@@ -5,37 +5,34 @@ import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.stage.Stage;
-import model.HibernateSession;
+import model.*;
 import org.hibernate.*;
 
 public class Main extends Application {
 
-private static void CreateTableHibernate() {
+    private static void CreateTableHibernate() {
         try {
             SessionFactory sessionFactory = HibernateSession.getSessionFactory();
             Session session = sessionFactory.openSession();
             session.close();
-            
-            /*DBImplementation db = new DBImplementation();
+
+            DBImplementation db = new DBImplementation();
             boolean adminCreated = db.createAdmin(
-                "admin",           // username
-                "admin",           // password
-                "admin@store.com", // email
-                "Admin",           // name
-                "000000000",       // telephone
-                "System",          // surname
-                "CTA-ADMIN"        // currentAccount
+                    "admin", // username
+                    "System", // surname
+                    "admin", // password
+                    "admin@store.com", // email
+                    "CTA-ADMIN" // currentAccount
             );
-            
+
             if (adminCreated) {
                 System.out.println("Admin por defecto creado/validado: admin");
             } else {
                 System.out.println("Admin 'admin' ya existe o error al crearlo");
-            }*/
-            
-        } catch (Exception e) {
+            }
+        } catch (HibernateException e) {
             System.err.println("Error al crear tablas: " + e.getMessage());
-            System.exit(1);  // Sale si no puede crear tablas
+            System.exit(1); // Sale si no puede crear tablas
         }
     }
 

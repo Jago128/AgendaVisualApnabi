@@ -15,17 +15,21 @@ public class Rutina implements Serializable {
     @Column(name = "name", nullable = false, unique = true, length = 50)
     private String name;
 
-    @Column(name = "description", nullable = false, length = 500)
-    private String desc;
+    @Column(name = "instruction", nullable = false, length = 500)
+    private String instruction;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user", nullable = false, referencedColumnName = "user_code")
+    private User user;
 
     public Rutina() {
         this.name = "";
-        this.desc = "";
+        this.instruction = "";
     }
 
-    public Rutina(String name, String desc) {
+    public Rutina(String name, String instruction) {
         this.name = name;
-        this.desc = desc;
+        this.instruction = instruction;
     }
 
     public int getRoutineCode() {
@@ -44,16 +48,24 @@ public class Rutina implements Serializable {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getInstruction() {
+        return instruction;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
-        return "Rutina{" + "routineCode=" + routineCode + ", name=" + name + ", desc=" + desc + '}';
+        return "Rutina{" + "routineCode=" + routineCode + ", name=" + name + ", instruction=" + instruction + ", user=" + user + '}';
     }
 }

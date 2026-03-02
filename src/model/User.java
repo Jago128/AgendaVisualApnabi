@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -10,6 +12,9 @@ public class User extends Profile {
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private Gender gender;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Rutina> routines = new ArrayList<>();
 
     public User() {
         super();
@@ -29,8 +34,21 @@ public class User extends Profile {
         this.gender = gender;
     }
 
+    public List<Rutina> getRoutines() {
+        return routines;
+    }
+
+    public void setRoutines(List<Rutina> routines) {
+        this.routines = routines;
+    }
+    
+    public void addRoutine(Rutina routine) {
+        routines.add(routine);
+        routine.setUser(this);
+    }
+
     @Override
     public String toString() {
-        return super.toString() + "User{" + "gender=" + gender + '}';
+        return super.toString() + "User{" + "gender=" + gender + ", routines=" + routines + '}';
     }
 }
