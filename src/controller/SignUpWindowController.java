@@ -10,6 +10,7 @@ import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import model.*;
 
@@ -62,6 +63,7 @@ public class SignUpWindowController implements Initializable {
         String surname = textFieldSurname.getText();
         String email = textFieldEmail.getText();
         Gender gender = comboBoxGender.getSelectionModel().getSelectedItem();
+
         String pass = passField.getText();
         String passRepeat = passFieldRepeat.getText();
 
@@ -120,13 +122,17 @@ public class SignUpWindowController implements Initializable {
     @FXML
     private void showPass(ActionEvent event) {
         if (cbShowPass.isSelected()) {
-            passFieldVisible.setText(passField.getText());
             passField.setVisible(false);
             passFieldVisible.setVisible(true);
+
+            passFieldRepeat.setVisible(false);
+            passFieldRepeatVisible.setVisible(true);
         } else {
-            passField.setText(passFieldVisible.getText());
             passFieldVisible.setVisible(false);
             passField.setVisible(true);
+
+            passFieldRepeatVisible.setVisible(false);
+            passFieldRepeat.setVisible(true);
         }
     }
 
@@ -166,5 +172,11 @@ public class SignUpWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         comboBoxGender.getItems().addAll(Gender.values());
+
+        // For syncing both passfield types
+        passField.textProperty().addListener((observable, oldVal, newVal) -> passFieldVisible.setText(newVal));
+        passFieldVisible.textProperty().addListener((observable, oldVal, newVal) -> passField.setText(newVal));
+        passFieldRepeat.textProperty().addListener((observable, oldVal, newVal) -> passFieldRepeatVisible.setText(newVal));
+        passFieldRepeatVisible.textProperty().addListener((observable, oldVal, newVal) -> passFieldRepeat.setText(newVal));
     }
 }

@@ -34,9 +34,7 @@ public class LoginWindowController implements Initializable {
     @FXML
     private Button btnExit;
 
-    // Annoying warning moment
-    @SuppressWarnings("FieldMayBeFinal")
-    private Controller cont = new Controller();
+    private Controller cont;
 
     @FXML
     private void showPass(ActionEvent event) {
@@ -120,5 +118,6 @@ public class LoginWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cont = new Controller();
     }
 }
