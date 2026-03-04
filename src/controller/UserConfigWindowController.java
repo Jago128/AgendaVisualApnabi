@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import model.*;
 
 /**
+ * Controller for User Config Window. Handles modifications of the user's account.
  *
  * @author Jago128
  */
@@ -55,22 +56,29 @@ public class UserConfigWindowController implements Initializable {
     private User user;
 
     /**
+     * Sets up the app controller instance.
      *
-     * @param cont
+     * @param cont The controller instance.
      */
     public void setController(Controller cont) {
         this.cont = cont;
     }
 
     /**
+     * Sets up the user profile.
      *
-     * @param profile
+     * @param profile The logged in user's profile.
      */
     public void setUser(User profile) {
         this.user = profile;
         textFieldName.setText(user.getUsername());
     }
 
+    /**
+     * Changes states of the visible and obscured password fields.
+     *
+     * @param event The checkbox click event.
+     */
     @FXML
     private void showPass(ActionEvent event) {
         if (cbShowPass.isSelected()) {
@@ -84,6 +92,12 @@ public class UserConfigWindowController implements Initializable {
         }
     }
 
+    /**
+     * Checks if an email complies with the format, otherwise throws an exception.
+     *
+     * @param email The email to be checked.
+     * @throws EmailFormatException If the email doesn't comply with regex pattern.
+     */
     private void emailFormatCheck(String email) throws EmailFormatException {
         Pattern modelo = Pattern.compile(
                 "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
@@ -93,6 +107,13 @@ public class UserConfigWindowController implements Initializable {
         }
     }
 
+    /**
+     * Checks if the password is lengthy enough and if the password and repeat password fields match, otherwise throws an exception.
+     *
+     * @param pass The password field password.
+     * @param passRepeat The repeat password field password.
+     * @throws PasswordCheckFailException If pass is too short or the pass fields don't match.
+     */
     private void passCheck(String pass, String passRepeat) throws PasswordCheckFailException {
         if (pass.length() < 8) {
             throw new PasswordCheckFailException("La contraseña debe tener al menos 8 caracteres.");
@@ -103,8 +124,13 @@ public class UserConfigWindowController implements Initializable {
         }
     }
 
+    /**
+     * Calls database method to modify the user account. Has checks for empty fields, if all fields are unchanged, incorrect email format, mismatched repeat password or short passwords, and duplicate prevention.
+     *
+     * @param event The button click event.
+     */
     @FXML
-    private void modify(ActionEvent event) {
+    public void modify(ActionEvent event) {
         String name = textFieldName.getText();
         String surname = textFieldSurname.getText();
         String email = textFieldEmail.getText();
@@ -146,12 +172,15 @@ public class UserConfigWindowController implements Initializable {
         }
     }
 
-    @FXML
-    private void exit(ActionEvent event) {
-        Stage current = (Stage) btnExit.getScene().getWindow();
-        current.close();
-    }
-
+    /**
+     * Shows an alert based on the parameters given on method call.
+     *
+     * @param type The type of alert to be created.
+     * @param title The title of the alert.
+     * @param header The header of the alert.
+     * @param content The content of the alert.
+     * @return If the alert type is for confirmation, returns the alert, otherwise returns null.
+     */
     private void showAlert(AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -160,6 +189,17 @@ public class UserConfigWindowController implements Initializable {
         }
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    /**
+     * Closes the window.
+     *
+     * @param event The button click event.
+     */
+    @FXML
+    private void exit(ActionEvent event) {
+        Stage current = (Stage) btnExit.getScene().getWindow();
+        current.close();
     }
 
     @Override

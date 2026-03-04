@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import model.*;
 
 /**
+ * Controller for Add Window. Handles adding new routines to an user and the database.
  *
  * @author Jago128
  */
@@ -23,7 +24,7 @@ public class AddWindowController implements Initializable {
 
     @FXML
     private TextArea textAreaInstruction;
-    
+
     @FXML
     private Button btnAdd;
 
@@ -35,29 +36,37 @@ public class AddWindowController implements Initializable {
     private Profile user;
 
     /**
+     * Sets up the app controller.
      *
-     * @param cont
+     * @param cont The controller instance.
      */
     public void setController(Controller cont) {
         this.cont = cont;
     }
 
     /**
+     * Sets up the user profile.
      *
-     * @param profile
+     * @param profile The logged in user's profile.
      */
     public void setUser(Profile profile) {
         this.user = profile;
     }
 
     /**
+     * Sets up the main window's FXML controller.
      *
-     * @param mainCont
+     * @param mainCont The main window's FXML controller.
      */
     public void setMainWindowController(MainWindowController mainCont) {
         this.mainCont = mainCont;
     }
-    
+
+    /**
+     * Calls the database method to add a routine, with messages for success or failure. Method has checks for empty fields and duplicate prevention.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void add(ActionEvent event) {
         String title = textFieldTitle.getText();
@@ -90,6 +99,15 @@ public class AddWindowController implements Initializable {
         }
     }
 
+    /**
+     * Shows an alert based on the parameters given on method call.
+     *
+     * @param type The type of alert to be created.
+     * @param title The title of the alert.
+     * @param header The header of the alert.
+     * @param content The content of the alert.
+     * @return If the alert type is for confirmation, returns the alert, otherwise returns null.
+     */
     private Alert showAlert(AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -107,6 +125,11 @@ public class AddWindowController implements Initializable {
         return null;
     }
 
+    /**
+     * Closes the window.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void exit(ActionEvent event) {
         Stage stage = (Stage) btnExit.getScene().getWindow();

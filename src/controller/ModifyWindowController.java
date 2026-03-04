@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import model.*;
 
 /**
+ * Controller for Modify Window. Handles modification of a chosen routine.
  *
  * @author Jago128
  */
@@ -31,49 +32,61 @@ public class ModifyWindowController implements Initializable {
     private Button btnExit;
 
     private Controller cont;
-    private Rutina routine;
+    private Routine routine;
     private Profile user;
     private MainWindowController mainCont;
 
     /**
+     * Sets up the app controller instance.
      *
-     * @param cont
+     * @param cont The controller instance.
      */
     public void setController(Controller cont) {
         this.cont = cont;
     }
 
     /**
+     * Sets up the user profile.
      *
-     * @param profile
+     * @param profile The logged in user's profile.
      */
     public void setUser(Profile profile) {
         this.user = profile;
     }
 
     /**
+     * Sets up the routine that is to be modified.
      *
-     * @param routine
+     * @param routine The routine to be modified.
      */
-    public void setRoutineToModify(Rutina routine) {
+    public void setRoutineToModify(Routine routine) {
         this.routine = routine;
         loadData();
     }
 
     /**
+     * Sets up the main window's FXML controller.
      *
-     * @param mainCont
+     * @param mainCont The main window's FXML controller.
      */
     public void setMainWindowController(MainWindowController mainCont) {
         this.mainCont = mainCont;
     }
 
+    /**
+     * Loads the routine's data into the fields.
+     */
     private void loadData() {
         textFieldTitle.setText(routine.getTitle());
         textFieldPerson.setText(routine.getPerson());
         textAreaInstruction.setText(routine.getInstruction());
     }
 
+    /**
+     * Calls the database method to modify the routine. Method has checks for empty fields and duplicate prevention, as well as making sure there's a change in any field.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void modify(ActionEvent event) {
         String title = textFieldTitle.getText();
@@ -89,21 +102,28 @@ public class ModifyWindowController implements Initializable {
                 if (cont.routineExists(title, person)) {
                     showAlert(AlertType.WARNING, "Error de validacion", "", "Ya existe una rutina con el mismo titulo para la misma persona.");
                 } else {
-                    if (cont.modifyRoutine(new Rutina(title, person, instruction, (User) user))) {
+                    if (cont.modifyRoutine(new Routine(title, person, instruction, (User) user))) {
                         mainCont.loadAllRoutines();
-                        showAlert(AlertType.CONFIRMATION, "Rutina " + title + " modificada correctamente",
+                        showAlert(AlertType.INFORMATION, "Rutina " + title + " modificada correctamente",
                                 "", "La rutina con el titulo " + title + " ha sido modificada correctamente.");
                         Stage stage = (Stage) btnModify.getScene().getWindow();
                         stage.close();
                     } else {
-                        showAlert(AlertType.ERROR, "ERROR", "",
-                                "Ha occurrido un error al modificar la rutina. Puede que ya exista en la base de datos una rutina con el mismo titulo para la misma persona.");
+                        showAlert(AlertType.ERROR, "ERROR", "", "Ha occurrido un error al modificar la rutina.");
                     }
                 }
             }
         }
     }
 
+    /**
+     * Shows an alert based on the parameters given on method call.
+     *
+     * @param type The type of alert to be created.
+     * @param title The title of the alert.
+     * @param header The header of the alert.
+     * @param content The content of the alert.
+     */
     private void showAlert(AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -116,6 +136,11 @@ public class ModifyWindowController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Closes the window.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void exit(ActionEvent event) {
         Stage stage = (Stage) btnExit.getScene().getWindow();

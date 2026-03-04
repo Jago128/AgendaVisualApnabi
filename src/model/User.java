@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 /**
+ * User object class, extending from Profile.
  *
  * @author Jago128
  */
@@ -18,10 +19,10 @@ public class User extends Profile {
     private Gender gender;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Rutina> routines = new ArrayList<>();
+    private List<Routine> routines = new ArrayList<>();
 
     /**
-     *
+     * Empty User constructor.
      */
     public User() {
         super();
@@ -29,12 +30,13 @@ public class User extends Profile {
     }
 
     /**
+     * Parametrized User constructor.
      *
-     * @param username
-     * @param surname
-     * @param password
-     * @param email
-     * @param gender
+     * @param username User name.
+     * @param surname User surname.
+     * @param password User password.
+     * @param email User email.
+     * @param gender User gender.
      */
     public User(String username, String surname, String password, String email, Gender gender) {
         super(username, surname, password, email);
@@ -42,16 +44,16 @@ public class User extends Profile {
     }
 
     /**
-     *
-     * @return
+     * Getter for user gender.
+     * @return The user gender.
      */
     public Gender getGender() {
         return gender;
     }
 
     /**
-     *
-     * @param gender
+     * Setter for user gender.
+     * @param gender The new user gender.
      */
     public void setGender(Gender gender) {
         this.gender = gender;
@@ -61,7 +63,7 @@ public class User extends Profile {
      *
      * @return
      */
-    public List<Rutina> getRoutines() {
+    public List<Routine> getRoutines() {
         return routines;
     }
 
@@ -69,15 +71,15 @@ public class User extends Profile {
      *
      * @param routines
      */
-    public void setRoutines(List<Rutina> routines) {
+    public void setRoutines(List<Routine> routines) {
         this.routines = routines;
     }
-    
+
     /**
      *
      * @param routine
      */
-    public void addRoutine(Rutina routine) {
+    public void addRoutine(Routine routine) {
         routines.add(routine);
         routine.setUser(this);
     }

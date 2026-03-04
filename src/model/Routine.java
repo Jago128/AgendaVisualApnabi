@@ -4,12 +4,13 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 /**
+ * Routine object class.
  *
  * @author Jago128
  */
 @Entity
 @Table(name = "ROUTINE_")
-public class Rutina implements Serializable {
+public class Routine implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +19,7 @@ public class Rutina implements Serializable {
 
     @Column(name = "title", nullable = false, length = 50)
     private String title;
-    
+
     @Column(name = "person", nullable = false, length = 100)
     private String person;
 
@@ -30,9 +31,9 @@ public class Rutina implements Serializable {
     private User user;
 
     /**
-     *
+     * Empty Routine constructor.
      */
-    public Rutina() {
+    public Routine() {
         this.title = "";
         this.person = "";
         this.instruction = "";
@@ -40,13 +41,14 @@ public class Rutina implements Serializable {
     }
 
     /**
+     * Parametrized Routine constructor.
      *
-     * @param title
-     * @param person
-     * @param instruction
-     * @param user
+     * @param title Routine title.
+     * @param person Person associated with routine.
+     * @param instruction Routine instructions.
+     * @param user The user that created the routine.
      */
-    public Rutina(String title, String person, String instruction, User user) {
+    public Routine(String title, String person, String instruction, User user) {
         this.title = title;
         this.person = person;
         this.instruction = instruction;
@@ -54,88 +56,99 @@ public class Rutina implements Serializable {
     }
 
     /**
+     * Getter for routine ID.
      *
-     * @return
+     * @return The routine ID.
      */
     public int getRoutineCode() {
         return routineCode;
     }
 
     /**
+     * Setter for routine ID.
      *
-     * @param routineCode
+     * @param routineCode The new routine ID.
      */
     public void setRoutineCode(int routineCode) {
         this.routineCode = routineCode;
     }
 
     /**
+     * Getter for routine title.
      *
-     * @return
+     * @return The routine title.
      */
     public String getTitle() {
         return title;
     }
 
     /**
+     * Setter for routine title.
      *
-     * @param title
+     * @param title The new routine title.
      */
     public void setTitle(String title) {
         this.title = title;
     }
 
     /**
+     * The getter for the person associated with the routine.
      *
-     * @return
+     * @return The person associated with the routine.
      */
     public String getPerson() {
         return person;
     }
 
     /**
+     * The setter for the person associated with the routine.
      *
-     * @param person
+     * @param person The new person associated with the routine.
      */
     public void setPerson(String person) {
         this.person = person;
     }
 
     /**
+     * The getter for the routine instruction.
      *
-     * @return
+     * @return The routine instruction.
      */
     public String getInstruction() {
         return instruction;
     }
 
     /**
+     * The setter for the routine instruction.
      *
-     * @param instruction
+     * @param instruction The new routine instruction.
      */
     public void setInstruction(String instruction) {
         this.instruction = instruction;
     }
 
     /**
+     * Getter for the user that created the routine.
      *
-     * @return
+     * @return The user that created the routine.
      */
     public User getUser() {
         return user;
     }
 
     /**
+     * Setter for the user that created the routine.
      *
-     * @param user
+     * @param user The new user that created the routine.
      */
     public void setUser(User user) {
         this.user = user;
     }
 
     /**
+     * ToString Method.
      *
-     * @return
+     * @return Routine info.
      */
     @Override
     public String toString() {

@@ -57,13 +57,19 @@ public class SignUpWindowController implements Initializable {
     private Button btnExit;
 
     /**
+     * Sets up the app controller instance.
      *
-     * @param cont
+     * @param cont The controller instance.
      */
     public void setController(Controller cont) {
         this.cont = cont;
     }
 
+    /**
+     * Calls the database method to sign up to the application. Has checks for empty fields, incorrect email format, mismatched repeat password or short passwords, and duplicate prevention.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void signUp(ActionEvent event) {
         String name = textFieldName.getText();
@@ -113,6 +119,12 @@ public class SignUpWindowController implements Initializable {
         }
     }
 
+    /**
+     * Checks if an email complies with the format, otherwise throws an exception.
+     *
+     * @param email The email to be checked.
+     * @throws EmailFormatException If the email doesn't comply with regex pattern.
+     */
     private void emailFormatCheck(String email) throws EmailFormatException {
         Pattern modelo = Pattern.compile(
                 "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
@@ -122,6 +134,13 @@ public class SignUpWindowController implements Initializable {
         }
     }
 
+    /**
+     * Checks if the password is lengthy enough and if the password and repeat password fields match, otherwise throws an exception.
+     *
+     * @param pass The password field password.
+     * @param passRepeat The repeat password field password.
+     * @throws PasswordCheckFailException If pass is too short or the pass fields don't match.
+     */
     private void passCheck(String pass, String passRepeat) throws PasswordCheckFailException {
         if (pass.length() < 8) {
             throw new PasswordCheckFailException("La contraseña debe tener al menos 8 caracteres.");
@@ -132,6 +151,11 @@ public class SignUpWindowController implements Initializable {
         }
     }
 
+    /**
+     * Changes states of the visible and obscured password fields.
+     *
+     * @param event The checkbox click event.
+     */
     @FXML
     private void showPass(ActionEvent event) {
         if (cbShowPass.isSelected()) {
@@ -149,6 +173,11 @@ public class SignUpWindowController implements Initializable {
         }
     }
 
+    /**
+     * Opens the Login Window.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void loginWindow(ActionEvent event) {
         try {
@@ -166,6 +195,15 @@ public class SignUpWindowController implements Initializable {
         }
     }
 
+    /**
+     * Shows an alert based on the parameters given on method call.
+     *
+     * @param type The type of alert to be created.
+     * @param title The title of the alert.
+     * @param header The header of the alert.
+     * @param content The content of the alert.
+     * @return If the alert type is for confirmation, returns the alert, otherwise returns null.
+     */
     private void showAlert(AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -176,6 +214,11 @@ public class SignUpWindowController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Closes the window.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void exit(ActionEvent event) {
         Stage stage = (Stage) btnExit.getScene().getWindow();

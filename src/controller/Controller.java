@@ -4,135 +4,138 @@ import java.util.List;
 import model.*;
 
 /**
+ * Controller class that handles interactions between the application and database, following the Data Access Object Model.
  *
  * @author Jago128
  */
 public class Controller {
-    
+
     AgendaDAO dao = new DBImplementation();
 
     /**
+     * Logs an user into the application if the username and password are correct.
      *
-     * @param username
-     * @param password
-     * @return
+     * @param username The username of the profile.
+     * @param password The password of the profile.
+     * @return The profile if successful, null otherwise.
      */
     public Profile login(String username, String password) {
         return dao.login(username, password);
     }
 
     /**
+     * Signs up an user to the application.
      *
-     * @param username
-     * @param surname
-     * @param password
-     * @param email
-     * @param gender
-     * @return
+     * @param username The new user's username.
+     * @param surname The new user's surname.
+     * @param password The new user's password.
+     * @param email The new user's email.
+     * @param gender The new user's gender.
+     * @return True if successful, false otherwise.
      */
     public boolean signUp(String username, String surname, String password, String email, Gender gender) {
         return dao.signUp(username, surname, password, email, gender);
     }
 
     /**
+     * Searches for an user in the database, mainly for username duplicate checking.
      *
-     * @param username
-     * @return
+     * @param username The username of the user to search for.
+     * @return True if exists, false if it doesn't exist.
      */
     public boolean userExists(String username) {
         return dao.userExists(username);
     }
 
     /**
+     * Creates an admin profile.
      *
-     * @param username
-     * @return
-     */
-    public User getUser(String username) {
-        return dao.getUser(username);
-    }
-    
-    /**
-     *
-     * @param username
-     * @param surname
-     * @param password
-     * @param email
-     * @param currentAccount
-     * @return
+     * @param username The new user's username.
+     * @param surname The new user's surname.
+     * @param password The new user's password.
+     * @param email The new user's email.
+     * @param currentAccount The current account of the admin.
+     * @return True if successful, false otherwise.
      */
     public boolean createAdmin(String username, String surname, String password, String email, String currentAccount) {
         return dao.createAdmin(username, surname, password, email, currentAccount);
     }
 
     /**
+     * Modifies an user based on the given parameters.
      *
-     * @param username
-     * @param surname
-     * @param password
-     * @param email
-     * @param gender
-     * @return
+     * @param username The user's new username.
+     * @param surname The user's new surname.
+     * @param password The user's new password.
+     * @param email The user's new email.
+     * @param gender The user's new gender.
+     * @return True if successful, false otherwise.
      */
     public boolean modifyAcc(String username, String surname, String password, String email, Gender gender) {
         return dao.modifyAcc(username, surname, password, email, gender);
     }
 
     /**
+     * Deletes an user from the database.
      *
-     * @param username
-     * @param password
-     * @return
+     * @param username The username of the user to be deleted.
+     * @param password The password of the user to be deleted.
+     * @return True if successful, false otherwise.
      */
     public boolean deleteAcc(String username, String password) {
         return dao.deleteAcc(username, password);
     }
 
     /**
+     * Gets all routines in the database.
      *
-     * @return
+     * @return The list of routines.
      */
-    public List<Rutina> getRoutines() {
+    public List<Routine> getRoutines() {
         return dao.getRoutines();
     }
-    
+
     /**
+     * Checks if a routine associated to a person already exists.
      *
-     * @param title
-     * @param person
-     * @return
+     * @param title The title of the routine.
+     * @param person The person associated to the routine.
+     * @return True if exists, false if it doesn't exist.
      */
     public boolean routineExists(String title, String person) {
         return dao.routineExists(title, person);
     }
 
     /**
+     * Adds a new routine to the database.
      *
-     * @param title
-     * @param person
-     * @param instruction
-     * @param user
-     * @return
+     * @param title The title of the routine.
+     * @param person The person associated to the routine.
+     * @param instruction The instructions of the routine.
+     * @param user The user who created the routine.
+     * @return True if successful, false otherwise.
      */
     public boolean addRoutine(String title, String person, String instruction, User user) {
         return dao.addRoutine(title, person, instruction, user);
     }
 
     /**
+     * Modifies a routine based off of the data in the given parameter.
      *
-     * @param routine
-     * @return
+     * @param routine The routine to be modified.
+     * @return True if successful, false otherwise.
      */
-    public boolean modifyRoutine(Rutina routine) {
+    public boolean modifyRoutine(Routine routine) {
         return dao.modifyRoutine(routine);
     }
 
     /**
+     * Deletes a routine from the database.
      *
-     * @param routine
-     * @return
+     * @param routine The routine to be deleted.
+     * @return True if successful, false otherwise.
      */
-    public boolean deleteRoutine(Rutina routine) {
+    public boolean deleteRoutine(Routine routine) {
         return dao.deleteRoutine(routine);
     }
 }

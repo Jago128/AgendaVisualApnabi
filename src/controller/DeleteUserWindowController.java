@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import model.Profile;
 
 /**
+ * Controller for Delete User Window. Handles user/admin account deletion.
  *
  * @author Jago128
  */
@@ -40,16 +41,18 @@ public class DeleteUserWindowController implements Initializable {
     private Stage main;
 
     /**
+     * Sets up the app controller instance.
      *
-     * @param cont
+     * @param cont The controller instance.
      */
     public void setController(Controller cont) {
         this.cont = cont;
     }
 
     /**
+     * Sets up the user profile.
      *
-     * @param profile
+     * @param profile The logged in user's profile.
      */
     public void setUser(Profile profile) {
         this.user = profile;
@@ -57,13 +60,19 @@ public class DeleteUserWindowController implements Initializable {
     }
 
     /**
+     * Sets up the main window's Stage.
      *
-     * @param main
+     * @param main The main window's Stage.
      */
     public void setMainStage(Stage main) {
         this.main = main;
     }
 
+    /**
+     * Changes states of the visible and obscured password fields.
+     *
+     * @param event The checkbox click event.
+     */
     @FXML
     private void showPass(ActionEvent event) {
         if (cbShowPass.isSelected()) {
@@ -75,13 +84,18 @@ public class DeleteUserWindowController implements Initializable {
         }
     }
 
+    /**
+     * Calls the database method to delete an user, with messages for success or failure. Method has checks for missing/incorrect password. Returns to Login window on successful account deletion.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void delete(ActionEvent event) {
         String username = labelUsername.getText();
         String password = passField.getText();
 
         if (passField.getText().isEmpty()) {
-            showAlert(AlertType.WARNING, "ERROR", "Conreseña requerida", "Introduce tu contraseña para borrar tu cuenta.");
+            showAlert(AlertType.WARNING, "ERROR", "Contraseña requerida", "Introduce tu contraseña para borrar tu cuenta.");
         } else {
             Alert warning = showAlert(AlertType.CONFIRMATION, "AVISO", "¿Estas seguro de que quieres borrar tu cuenta?", "Elija una opcion.");
             if (warning.getResult().equals(ButtonType.OK)) {
@@ -107,6 +121,15 @@ public class DeleteUserWindowController implements Initializable {
         }
     }
 
+    /**
+     * Shows an alert based on the parameters given on method call.
+     *
+     * @param type The type of alert to be created.
+     * @param title The title of the alert.
+     * @param header The header of the alert.
+     * @param content The content of the alert.
+     * @return If the alert type is for confirmation, returns the alert, otherwise returns null.
+     */
     private Alert showAlert(AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -124,6 +147,11 @@ public class DeleteUserWindowController implements Initializable {
         return null;
     }
 
+    /**
+     * Closes the window.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void exit(ActionEvent event) {
         Stage stage = (Stage) btnExit.getScene().getWindow();

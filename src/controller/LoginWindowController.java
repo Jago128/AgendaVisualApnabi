@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import model.Profile;
 
 /**
+ * Controller for Login Window. Handles login to application.
  *
  * @author Jago128
  */
@@ -40,6 +41,11 @@ public class LoginWindowController implements Initializable {
 
     private final Controller cont = new Controller();
 
+    /**
+     * Changes states of the visible and obscured password fields.
+     *
+     * @param event The checkbox toggle event.
+     */
     @FXML
     private void showPass(ActionEvent event) {
         if (cbShowPass.isSelected()) {
@@ -51,6 +57,11 @@ public class LoginWindowController implements Initializable {
         }
     }
 
+    /**
+     * Handles login to application. Opens Main window if successful, shows an error on fail.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void login(ActionEvent event) {
         String username = textfieldName.getText();
@@ -82,6 +93,11 @@ public class LoginWindowController implements Initializable {
         }
     }
 
+    /**
+     * Opens the Sign Up window.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void signUpWindow(ActionEvent event) {
         try {
@@ -101,6 +117,14 @@ public class LoginWindowController implements Initializable {
         }
     }
 
+    /**
+     * Shows an alert based on the parameters given on method call.
+     *
+     * @param type The type of alert to be created.
+     * @param title The title of the alert.
+     * @param header The header of the alert.
+     * @param content The content of the alert.
+     */
     private void showAlert(AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -112,7 +136,12 @@ public class LoginWindowController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
-    
+
+    /**
+     * Closes the application by closing the window.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void exit(ActionEvent event) {
         Stage stage = (Stage) btnExit.getScene().getWindow();

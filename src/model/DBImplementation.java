@@ -7,16 +7,16 @@ import org.hibernate.*;
 import org.hibernate.query.Query;
 
 /**
- *
+ * Implementation of the AgendaDAO interface, using the Hibernate ORM for all database operations.
  * @author Jago128
  */
 public class DBImplementation implements AgendaDAO {
 
     /**
-     *
-     * @param username
-     * @param password
-     * @return
+     * Logs an user into the application if the username and password are correct.
+     * @param username The username of the profile.
+     * @param password The password of the profile.
+     * @return The profile if successful, null otherwise.
      */
     @Override
     public Profile login(String username, String password) {
@@ -57,13 +57,13 @@ public class DBImplementation implements AgendaDAO {
     }
 
     /**
-     *
-     * @param username
-     * @param surname
-     * @param password
-     * @param email
-     * @param gender
-     * @return
+     * Signs up an user to the application.
+     * @param username The new user's username.
+     * @param surname The new user's surname.
+     * @param password The new user's password.
+     * @param email The new user's email.
+     * @param gender The new user's gender.
+     * @return True if successful, false otherwise.
      */
     @Override
     public boolean signUp(String username, String surname, String password, String email, Gender gender) {
@@ -112,9 +112,9 @@ public class DBImplementation implements AgendaDAO {
     }
 
     /**
-     *
-     * @param username
-     * @return
+     * Searches for an user in the database, mainly for username duplicate checking.
+     * @param username The username of the user to search for.
+     * @return True if exists, false if it doesn't exist.
      */
     @Override
     public boolean userExists(String username) {
@@ -139,39 +139,13 @@ public class DBImplementation implements AgendaDAO {
     }
 
     /**
-     *
-     * @param username
-     * @return
-     */
-    @Override
-    public User getUser(String username) {
-        Session session = getSessionFactory().openSession();
-
-        try {
-            String hql = "FROM User u WHERE u.username = :username";
-            Query<User> query = session.createQuery(hql, User.class);
-            query.setParameter("username", username);
-
-            return query.uniqueResult();
-
-        } catch (Exception e) {
-            System.out.println("Error de base de datos al intentar obtener un usuario: " + e.getMessage());
-            return null;
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-    }
-
-    /**
-     *
-     * @param username
-     * @param surname
-     * @param password
-     * @param email
-     * @param currentAccount
-     * @return
+     * Creates an admin profile.
+     * @param username The new user's username.
+     * @param surname The new user's surname.
+     * @param password The new user's password.
+     * @param email The new user's email.
+     * @param currentAccount The current account of the admin.
+     * @return True if successful, false otherwise.
      */
     @Override
     public boolean createAdmin(String username, String surname, String password, String email, String currentAccount) {
@@ -219,13 +193,13 @@ public class DBImplementation implements AgendaDAO {
     }
 
     /**
-     *
-     * @param username
-     * @param surname
-     * @param password
-     * @param email
-     * @param gender
-     * @return
+     * Modifies an user based on the given parameters.
+     * @param username The user's new username.
+     * @param surname The user's new surname.
+     * @param password The user's new password.
+     * @param email The user's new email.
+     * @param gender The user's new gender.
+     * @return True if successful, false otherwise.
      */
     @Override
     public boolean modifyAcc(String username, String surname, String password, String email, Gender gender) {
@@ -273,10 +247,10 @@ public class DBImplementation implements AgendaDAO {
     }
 
     /**
-     *
-     * @param username
-     * @param password
-     * @return
+     * Deletes an user from the database.
+     * @param username The username of the user to be deleted.
+     * @param password The password of the user to be deleted.
+     * @return True if successful, false otherwise.
      */
     @Override
     public boolean deleteAcc(String username, String password) {
@@ -321,19 +295,18 @@ public class DBImplementation implements AgendaDAO {
             }
         }
     }
-
     /**
-     *
-     * @return
+     * Gets all routines in the database.
+     * @return The list of routines.
      */
     @Override
-    public List<Rutina> getRoutines() {
+    public List<Routine> getRoutines() {
         Session session = getSessionFactory().openSession();
-        List<Rutina> routines = new ArrayList<>();
+        List<Routine> routines = new ArrayList<>();
 
         try {
-            String hql = "FROM Rutina r ORDER BY r.title ASC";
-            Query<Rutina> query = session.createQuery(hql, Rutina.class);
+            String hql = "FROM Routine r ORDER BY r.title ASC";
+            Query<Routine> query = session.createQuery(hql, Routine.class);
 
             routines = query.getResultList();
             System.out.println("Total de rutinas encontradas: " + routines.size());
@@ -350,17 +323,17 @@ public class DBImplementation implements AgendaDAO {
     }
     
     /**
-     *
-     * @param title
-     * @param person
-     * @return
+     * Checks if a routine associated to a person already exists.
+     * @param title The title of the routine.
+     * @param person The person associated to the routine.
+     * @return True if exists, false if it doesn't exist.
      */
     @Override
     public boolean routineExists(String title, String person) {
         Session session = getSessionFactory().openSession();
 
         try {
-            String hql = "SELECT COUNT(p) FROM Rutina r WHERE r.title = :title AND r.person = :person";
+            String hql = "SELECT COUNT(p) FROM Routine r WHERE r.title = :title AND r.person = :person";
             Query<Long> query = session.createQuery(hql, Long.class);
             query.setParameter("title", title);
             query.setParameter("person", person);
@@ -379,12 +352,12 @@ public class DBImplementation implements AgendaDAO {
     }
 
     /**
-     *
-     * @param title
-     * @param person
-     * @param instruction
-     * @param user
-     * @return
+     * Adds a new routine to the database.
+     * @param title The title of the routine.
+     * @param person The person associated to the routine.
+     * @param instruction The instructions of the routine.
+     * @param user The user who created the routine.
+     * @return True if successful, false otherwise.
      */
     @Override
     public boolean addRoutine(String title, String person, String instruction, User user) {
@@ -394,7 +367,7 @@ public class DBImplementation implements AgendaDAO {
         try {
             transaction = session.beginTransaction();
 
-            String checkHql = "SELECT COUNT(r) FROM Rutina r WHERE r.title = :title AND r.person = :person";
+            String checkHql = "SELECT COUNT(r) FROM Routine r WHERE r.title = :title AND r.person = :person";
             Query<Long> checkQuery = session.createQuery(checkHql, Long.class);
             checkQuery.setParameter("title", title);
             checkQuery.setParameter("person", person);
@@ -405,7 +378,7 @@ public class DBImplementation implements AgendaDAO {
                 return false;
             }
 
-            Rutina routine = new Rutina(title, person, instruction, user);
+            Routine routine = new Routine(title, person, instruction, user);
 
             session.save(routine);
             transaction.commit();
@@ -428,12 +401,12 @@ public class DBImplementation implements AgendaDAO {
     }
 
     /**
-     *
-     * @param routine
-     * @return
+     * Modifies a routine based off of the data in the given parameter.
+     * @param routine The routine to be modified.
+     * @return True if successful, false otherwise.
      */
     @Override
-    public boolean modifyRoutine(Rutina routine) {
+    public boolean modifyRoutine(Routine routine) {
         Session session = getSessionFactory().openSession();
         Transaction transaction = null;
 
@@ -460,19 +433,19 @@ public class DBImplementation implements AgendaDAO {
     }
 
     /**
-     *
-     * @param routine
-     * @return
+     * Deletes a routine from the database.
+     * @param routine The routine to be deleted.
+     * @return True if successful, false otherwise.
      */
     @Override
-    public boolean deleteRoutine(Rutina routine) {
+    public boolean deleteRoutine(Routine routine) {
         Session session = getSessionFactory().openSession();
         Transaction transaction = null;
 
         try {
             transaction = session.beginTransaction();
 
-            Rutina routineToDelete = session.get(Rutina.class, routine.getRoutineCode());
+            Routine routineToDelete = session.get(Routine.class, routine.getRoutineCode());
 
             if (routineToDelete != null) {
                 session.delete(routineToDelete);

@@ -1,7 +1,7 @@
 package model;
 
 /**
- *
+ * Enum for Gender.
  * @author Jago128
  */
 public enum Gender {

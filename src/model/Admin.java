@@ -3,6 +3,7 @@ package model;
 import javax.persistence.*;
 
 /**
+ * Admin object class, extending from Profile.
  *
  * @author Jago128
  */
@@ -15,7 +16,7 @@ public class Admin extends Profile {
     private String currentAcc;
 
     /**
-     *
+     * Empty Admin constructor.
      */
     public Admin() {
         super();
@@ -23,12 +24,13 @@ public class Admin extends Profile {
     }
 
     /**
+     * Parametrized Admin constructor.
      *
-     * @param username
-     * @param surname
-     * @param password
-     * @param email
-     * @param currentAcc
+     * @param username Admin username.
+     * @param surname Admin surname.
+     * @param password Admin password.
+     * @param email Admin email.
+     * @param currentAcc Admin current account.
      */
     public Admin(String username, String surname, String password, String email, String currentAcc) {
         super(username, surname, password, email);
@@ -36,24 +38,27 @@ public class Admin extends Profile {
     }
 
     /**
+     * Getter for current account.
      *
-     * @return
+     * @return The Admin current account.
      */
     public String getCurrentAcc() {
         return currentAcc;
     }
 
     /**
+     * Setter for current account.
      *
-     * @param currentAcc
+     * @param currentAcc The new Admin current account.
      */
     public void setCurrentAcc(String currentAcc) {
         this.currentAcc = currentAcc;
     }
 
     /**
+     * ToString method.
      *
-     * @return
+     * @return Admin info.
      */
     @Override
     public String toString() {

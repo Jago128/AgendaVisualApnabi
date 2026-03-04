@@ -9,11 +9,15 @@ import model.*;
 import org.hibernate.*;
 
 /**
+ * The application Main class.
  *
  * @author Jago128
  */
 public class Main extends Application {
 
+    /**
+     * Static method to create all tables in the database via the Hibernate ORM and to also set up an Admin account.
+     */
     private static void CreateTableHibernate() {
         try {
             SessionFactory sessionFactory = HibernateSession.getSessionFactory();
@@ -30,16 +34,22 @@ public class Main extends Application {
             );
 
             if (adminCreated) {
-                System.out.println("Admin por defecto creado/validado: admin");
+                System.out.println("Admin por defecto creado: admin");
             } else {
-                System.out.println("Admin 'admin' ya existe o error al crearlo");
+                System.out.println("Admin 'admin' ya existe");
             }
         } catch (HibernateException e) {
-            System.err.println("Error al crear tablas: " + e.getMessage());
+            System.err.println("Error al crear tablas o admin: " + e.getMessage());
             System.exit(1);
         }
     }
 
+    /**
+     * Starts the JavaFX application by opening the Login window.
+     *
+     * @param stage The starting stage for this application.
+     * @throws Exception If the FXML file cannot be loaded.
+     */
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/view/LoginWindow.fxml"));
@@ -50,8 +60,9 @@ public class Main extends Application {
     }
 
     /**
+     * Main method to launch the application.
      *
-     * @param args
+     * @param args command-line arguments (Unused).
      */
     public static void main(String[] args) {
         CreateTableHibernate();

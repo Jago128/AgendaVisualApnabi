@@ -44,6 +44,6 @@
         <mapping class="model.Profile"/>
         <mapping class="model.User"/>
         <mapping class="model.Admin"/>
-        <mapping class="model.Rutina"/>
+        <mapping class="model.Routine"/>
     </session-factory>
 </hibernate-configuration>

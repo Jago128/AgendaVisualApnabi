@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 /**
+ * Profile abstract object class. User and Admin extend from this class.
  *
  * @author Jago128
  */
@@ -25,12 +26,12 @@ public abstract class Profile implements Serializable {
 
     @Column(name = "password", nullable = false, length = 50)
     private String password;
-    
+
     @Column(name = "email", nullable = false, unique = true, length = 50)
     private String email;
 
     /**
-     *
+     * Empty Profile constructor.
      */
     public Profile() {
         this.userCode = 0;
@@ -41,6 +42,7 @@ public abstract class Profile implements Serializable {
     }
 
     /**
+     * Parametrized Profile constructor.
      *
      * @param username
      * @param surname
@@ -55,88 +57,99 @@ public abstract class Profile implements Serializable {
     }
 
     /**
+     * Getter for profile ID.
      *
-     * @return
+     * @return The profile ID.
      */
     public int getUserCode() {
         return userCode;
     }
 
     /**
+     * Setter for profile ID.
      *
-     * @param userCode
+     * @param userCode The profile ID.
      */
     public void setUserCode(int userCode) {
         this.userCode = userCode;
     }
 
     /**
+     * Getter for profile username.
      *
-     * @return
+     * @return The profile username.
      */
     public String getUsername() {
         return username;
     }
 
     /**
+     * Setter for profile username.
      *
-     * @param username
+     * @param username The profile new username.
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
+     * Getter for profile surname.
      *
-     * @return
+     * @return The profile surname.
      */
     public String getSurname() {
         return surname;
     }
 
     /**
+     * Setter for profile surname.
      *
-     * @param surname
+     * @param surname The profile new surname.
      */
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
     /**
+     * Getter for profile password.
      *
-     * @return
+     * @return Setter for profile password.
      */
     public String getPassword() {
         return password;
     }
 
     /**
+     * Setter for profile password.
      *
-     * @param password
+     * @param password The profile new pasword.
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
+     * Getter for profile email.
      *
-     * @return
+     * @return The profile email.
      */
     public String getEmail() {
         return email;
     }
 
     /**
+     * Setter for profile email.
      *
-     * @param email
+     * @param email The profile new email.
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
+     * ToString method.
      *
-     * @return
+     * @return Profile info.
      */
     @Override
     public String toString() {

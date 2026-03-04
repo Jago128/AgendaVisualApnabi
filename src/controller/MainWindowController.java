@@ -14,6 +14,7 @@ import javafx.stage.*;
 import model.*;
 
 /**
+ * Controller for Main Window. Handles showing all available routines, navigation to other windows, and deletion of routines.
  *
  * @author Jago128
  */
@@ -23,16 +24,16 @@ public class MainWindowController implements Initializable {
     private Button tempBtn;
 
     @FXML
-    private TableView<Rutina> tableAgenda;
+    private TableView<Routine> tableAgenda;
 
     @FXML
-    private TableColumn<Rutina, String> colTitle;
+    private TableColumn<Routine, String> colTitle;
 
     @FXML
-    private TableColumn<Rutina, String> colPersona;
+    private TableColumn<Routine, String> colPersona;
 
     @FXML
-    private TableColumn<Rutina, String> colInstruction;
+    private TableColumn<Routine, String> colInstruction;
 
     @FXML
     private MenuButton userMenu;
@@ -60,29 +61,22 @@ public class MainWindowController implements Initializable {
 
     private Controller cont;
     private Profile user;
-    private ObservableList<Rutina> routines;
-    private Rutina selected;
+    private ObservableList<Routine> routines;
+    private Routine selected;
 
     /**
+     * Sets up the app controller instance.
      *
-     * @param cont
+     * @param cont The controller instance.
      */
     public void setController(Controller cont) {
         this.cont = cont;
     }
 
     /**
+     * Sets up the user profile and username on the user menu button.
      *
-     */
-    public void setUpList() {
-        routines = FXCollections.observableArrayList();
-        routines.setAll(cont.getRoutines());
-        tableAgenda.setItems(routines);
-    }
-
-    /**
-     *
-     * @param profile
+     * @param profile The logged in user's profile.
      */
     public void setUser(Profile profile) {
         this.user = profile;
@@ -100,20 +94,28 @@ public class MainWindowController implements Initializable {
     }
 
     /**
-     *
+     * Sets up the list for the routines table.
      */
-    public void loadAllRoutines() {
+    public void setUpList() {
+        routines = FXCollections.observableArrayList();
         routines.setAll(cont.getRoutines());
+        tableAgenda.setItems(routines);
     }
 
-    private void getSelectedTableItem() {
-        selected = selected = tableAgenda.getSelectionModel().getSelectedItem();
-    }
-
+    /**
+     * Configures all table columns with the respective parameters.
+     */
     private void configureTableColumns() {
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         colPersona.setCellValueFactory(new PropertyValueFactory<>("person"));
         colInstruction.setCellValueFactory(new PropertyValueFactory<>("instruction"));
+    }
+
+    /**
+     * Gets the currently selected table item.
+     */
+    private void getSelectedTableItem() {
+        selected = selected = tableAgenda.getSelectionModel().getSelectedItem();
     }
 
     @FXML
@@ -121,6 +123,18 @@ public class MainWindowController implements Initializable {
         //API check
     }
 
+    /**
+     * Reloads all routines into the table.
+     */
+    public void loadAllRoutines() {
+        routines.setAll(cont.getRoutines());
+    }
+
+    /**
+     * Opens the modify user window.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void modifyUser(ActionEvent event) {
         try {
@@ -140,6 +154,11 @@ public class MainWindowController implements Initializable {
         }
     }
 
+    /**
+     * Opens the delete user account window.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void deleteAcc(ActionEvent event) {
         try {
@@ -162,6 +181,11 @@ public class MainWindowController implements Initializable {
         }
     }
 
+    /**
+     * Logs the user out by sending them back to the Login window.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void logOut(ActionEvent event) {
         try {
@@ -179,6 +203,11 @@ public class MainWindowController implements Initializable {
         }
     }
 
+    /**
+     * Opens the add routine window.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void add(ActionEvent event) {
         try {
@@ -200,6 +229,11 @@ public class MainWindowController implements Initializable {
         }
     }
 
+    /**
+     * Opens the modify routine window if a routine is selected, otherwise shows a warning message.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void modify(ActionEvent event) {
         if (selected == null) {
@@ -226,6 +260,11 @@ public class MainWindowController implements Initializable {
         }
     }
 
+    /**
+     * Attempts to delete a routine if one is selected, otherwise shows a warning message.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void delete(ActionEvent event) {
         if (selected == null) {
@@ -244,6 +283,15 @@ public class MainWindowController implements Initializable {
         }
     }
 
+    /**
+     * Shows an alert based on the parameters given on method call.
+     *
+     * @param type The type of alert to be created.
+     * @param title The title of the alert.
+     * @param header The header of the alert.
+     * @param content The content of the alert.
+     * @return If the alert type is for confirmation, returns the alert, otherwise returns null.
+     */
     private Alert showAlert(AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -261,6 +309,11 @@ public class MainWindowController implements Initializable {
         return null;
     }
 
+    /**
+     * Closes the application by closing the window.
+     *
+     * @param event The button click event.
+     */
     @FXML
     private void exit(ActionEvent event) {
         Stage stage = (Stage) btnExit.getScene().getWindow();
