@@ -12,6 +12,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.*;
 
+/**
+ *
+ * @author Jago128
+ */
 public class UserConfigWindowController implements Initializable {
 
     @FXML
@@ -42,15 +46,26 @@ public class UserConfigWindowController implements Initializable {
     private CheckBox cbShowPass;
 
     @FXML
+    private Button btnModify;
+
+    @FXML
     private Button btnExit;
 
     private Controller cont;
     private User user;
 
+    /**
+     *
+     * @param cont
+     */
     public void setController(Controller cont) {
         this.cont = cont;
     }
 
+    /**
+     *
+     * @param profile
+     */
     public void setUser(User profile) {
         this.user = profile;
         textFieldName.setText(user.getUsername());
@@ -79,10 +94,12 @@ public class UserConfigWindowController implements Initializable {
     }
 
     private void passCheck(String pass, String passRepeat) throws PasswordCheckFailException {
-        if (!pass.equals(passRepeat)) {
-            throw new PasswordCheckFailException();
-        } else if (pass.length() < 8) {
+        if (pass.length() < 8) {
             throw new PasswordCheckFailException("La contraseña debe tener al menos 8 caracteres.");
+        } else {
+            if (!pass.equals(passRepeat)) {
+                throw new PasswordCheckFailException();
+            }
         }
     }
 
@@ -95,32 +112,36 @@ public class UserConfigWindowController implements Initializable {
         String pass = passField.getText();
         String passRepeat = passFieldRepeat.getText();
 
-        if (name.equals(user.getUsername()) && surname.equals(user.getSurname()) && email.equals(user.getEmail())
-                && gender.equals(user.getGender()) && pass.equals(user.getPassword())) {
-            showAlert(AlertType.WARNING, "Sin cambios", "No hay ningun cambio", "Se debe hacer al menos un cambio antes de modificar tu cuenta.");
+        if (name.trim().isEmpty() || surname.trim().isEmpty() || email.trim().isEmpty() || gender == null || pass.trim().isEmpty() || passRepeat.trim().isEmpty()) {
+            showAlert(AlertType.WARNING, "Error de validacion", "Faltan campos", "Por favor, rellena todos los campos.");
         } else {
-            try {
-                if (!email.equals(user.getEmail())) {
-                    emailFormatCheck(email);
-                }
-
-                if (!pass.equals(user.getPassword())) {
-                    passCheck(pass, passRepeat);
-                }
-
-                if (cont.userExists(name)) {
-                    showAlert(AlertType.WARNING, "Error de validacion", "", "Ya existe un usuario con el mismo nombre.");
-                } else {
-                    if (cont.modifyAcc(name, surname, pass, email, gender)) {
-                        showAlert(AlertType.INFORMATION, "Cuenta modificada", "Modificacion exitosa!", "Tu cuenta ha sido modificada correctamente.");
-                    } else {
-                        showAlert(AlertType.ERROR, "ERROR!", "", "Ha ocurrido un error al intentar registrarse.");
+            if (name.equals(user.getUsername()) && surname.equals(user.getSurname()) && email.equals(user.getEmail())
+                    && gender.equals(user.getGender()) && pass.equals(user.getPassword())) {
+                showAlert(AlertType.WARNING, "Sin cambios", "No hay ningun cambio", "Se debe hacer al menos un cambio antes de modificar tu cuenta.");
+            } else {
+                try {
+                    if (!email.equals(user.getEmail())) {
+                        emailFormatCheck(email);
                     }
+
+                    if (!pass.equals(user.getPassword())) {
+                        passCheck(pass, passRepeat);
+                    }
+
+                    if (cont.userExists(name)) {
+                        showAlert(AlertType.WARNING, "Error de validacion", "", "Ya existe un usuario con el mismo nombre.");
+                    } else {
+                        if (cont.modifyAcc(name, surname, pass, email, gender)) {
+                            showAlert(AlertType.INFORMATION, "Cuenta modificada", "Modificacion exitosa!", "Tu cuenta ha sido modificada correctamente.");
+                        } else {
+                            showAlert(AlertType.ERROR, "ERROR!", "", "Ha ocurrido un error al intentar registrarse.");
+                        }
+                    }
+                } catch (EmailFormatException e) {
+                    showAlert(AlertType.WARNING, "Error de validacion", "Formato Email invalido!", e.getMessage());
+                } catch (PasswordCheckFailException e1) {
+                    showAlert(AlertType.WARNING, "Error de validacion", "", e1.getMessage());
                 }
-            } catch (EmailFormatException e) {
-                showAlert(AlertType.WARNING, "Error de validacion", "Formato Email invalido!", e.getMessage());
-            } catch (PasswordCheckFailException e1) {
-                showAlert(AlertType.WARNING, "Error de validacion", "", e1.getMessage());
             }
         }
     }
@@ -144,5 +165,7 @@ public class UserConfigWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         comboBoxGender.getItems().addAll(Gender.values());
+        passField.textProperty().addListener((observable, oldVal, newVal) -> passFieldVisible.setText(newVal));
+        passFieldVisible.textProperty().addListener((observable, oldVal, newVal) -> passField.setText(newVal));
     }
 }

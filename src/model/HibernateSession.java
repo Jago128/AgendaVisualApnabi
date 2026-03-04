@@ -3,6 +3,10 @@ package model;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 
+/**
+ *
+ * @author Jago128
+ */
 public class HibernateSession {
 
     private static SessionFactory sessionFactory;
@@ -16,10 +20,17 @@ public class HibernateSession {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
+    /**
+     *
+     */
     public static void close() {
         if (sessionFactory != null && !sessionFactory.isClosed()) {
             getSessionFactory().close();

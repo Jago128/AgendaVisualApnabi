@@ -9,45 +9,49 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="408.0" prefWidth="254.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserConfigWindowController">
+<AnchorPane id="AnchorPane" prefHeight="387.0" prefWidth="505.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserConfigWindowController">
    <children>
-      <Label layoutX="13.0" layoutY="14.0" prefHeight="34.0" prefWidth="132.0" text="Modificar datos">
+      <Label layoutX="175.0" layoutY="20.0" prefHeight="42.0" prefWidth="154.0" text="Modificacion cuenta">
          <font>
-            <Font size="18.0" />
+            <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="60.0" prefHeight="22.0" prefWidth="62.0" text="Nombre:">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <TextField fx:id="textFieldName" layoutX="84.0" layoutY="58.0" />
-      <Label layoutX="13.0" layoutY="98.0" prefHeight="22.0" prefWidth="69.0" text="Apellidos:">
+      <Label layoutX="24.0" layoutY="80.0" prefHeight="22.0" prefWidth="62.0" text="Nombre:" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="textFieldSurname" layoutX="84.0" layoutY="96.0" />
-      <Label layoutX="25.0" layoutY="134.0" prefHeight="22.0" prefWidth="42.0" text="Email:">
+      <TextField fx:id="textFieldName" layoutX="94.0" layoutY="78.0" prefHeight="26.0" prefWidth="154.0" />
+      <Label layoutX="23.0" layoutY="120.0" prefHeight="22.0" prefWidth="69.0" text="Apellidos:" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="textFieldEmail" layoutX="84.0" layoutY="132.0" />
-      <Label layoutX="20.0" layoutY="166.0" prefHeight="26.0" prefWidth="55.0" text="Genero:">
+      <TextField fx:id="textFieldSurname" layoutX="94.0" layoutY="118.0" prefHeight="26.0" prefWidth="154.0" />
+      <Label layoutX="267.0" layoutY="82.0" prefHeight="22.0" prefWidth="42.0" text="Email:" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <ComboBox fx:id="comboBoxGender" layoutX="84.0" layoutY="166.0" prefHeight="26.0" prefWidth="150.0" />
-      <Label layoutX="79.0" layoutY="198.0" prefHeight="22.0" prefWidth="102.0" text="Nueva contraseña:" />
-      <PasswordField fx:id="passField" layoutX="39.0" layoutY="222.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu contraseña" />
-      <TextField fx:id="passFieldVisible" layoutX="39.0" layoutY="222.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu contraseña" visible="false" />
-      <Label layoutX="65.0" layoutY="256.0" prefHeight="22.0" prefWidth="139.0" text="Repita nueva contraseña:" />
-      <PasswordField fx:id="passFieldRepeat" layoutX="39.0" layoutY="278.0" prefHeight="26.0" prefWidth="187.0" promptText="Repite tu contraseña" />
-      <TextField fx:id="passFieldRepeatVisible" layoutX="39.0" layoutY="278.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="187.0" promptText="Repite tu contraseña" visible="false" />
-      <CheckBox fx:id="cbShowPass" layoutX="62.0" layoutY="312.0" mnemonicParsing="false" onAction="#showPass" prefHeight="26.0" prefWidth="138.0" text="Mostrar contraseña" />
-      <Button layoutX="75.0" layoutY="345.0" mnemonicParsing="false" onAction="#modify" prefHeight="42.0" prefWidth="102.0" text="Modificar" />
-      <Button fx:id="btnExit" layoutX="158.0" layoutY="18.0" mnemonicParsing="false" onAction="#exit" prefHeight="27.0" prefWidth="78.0" text="Salir" />
+      <TextField fx:id="textFieldEmail" layoutX="326.0" layoutY="80.0" prefHeight="26.0" prefWidth="154.0" />
+      <Label layoutX="262.0" layoutY="118.0" prefHeight="26.0" prefWidth="55.0" text="Genero:" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboBoxGender" layoutX="326.0" layoutY="118.0" prefHeight="26.0" prefWidth="162.0" />
+      <Label layoutX="175.0" layoutY="159.0" prefHeight="27.0" prefWidth="130.0" text="Nueva contraseña:" textAlignment="CENTER" />
+      <PasswordField fx:id="passField" layoutX="159.0" layoutY="186.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu contraseña" />
+      <TextField fx:id="passFieldVisible" layoutX="159.0" layoutY="186.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu contraseña" visible="false" />
+      <Label layoutX="168.0" layoutY="225.0" prefHeight="26.0" prefWidth="169.0" text="Repita nueva contraseña:" textAlignment="CENTER" />
+      <PasswordField fx:id="passFieldRepeat" layoutX="159.0" layoutY="251.0" prefHeight="26.0" prefWidth="187.0" promptText="Repite tu contraseña" />
+      <TextField fx:id="passFieldRepeatVisible" layoutX="159.0" layoutY="251.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="187.0" promptText="Repite tu contraseña" visible="false" />
+      <CheckBox fx:id="cbShowPass" layoutX="167.0" layoutY="286.0" mnemonicParsing="false" onAction="#showPass" prefHeight="31.0" prefWidth="162.0" text="Mostrar contraseña">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </CheckBox>
+      <Button fx:id="btnModify" layoutX="179.0" layoutY="329.0" mnemonicParsing="false" onAction="#modify" prefHeight="42.0" prefWidth="138.0" text="Modificar cuenta" />
+      <Button fx:id="btnExit" layoutX="380.0" layoutY="24.0" mnemonicParsing="false" onAction="#exit" prefHeight="34.0" prefWidth="96.0" text="Salir" />
    </children>
 </AnchorPane>

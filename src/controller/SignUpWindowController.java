@@ -13,6 +13,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.*;
 
+/**
+ *
+ * @author Jago128w
+ */
 public class SignUpWindowController implements Initializable {
 
     @FXML
@@ -52,6 +56,10 @@ public class SignUpWindowController implements Initializable {
     @FXML
     private Button btnExit;
 
+    /**
+     *
+     * @param cont
+     */
     public void setController(Controller cont) {
         this.cont = cont;
     }
@@ -66,38 +74,42 @@ public class SignUpWindowController implements Initializable {
         String pass = passField.getText();
         String passRepeat = passFieldRepeat.getText();
 
-        try {
-            emailFormatCheck(email);
-            passCheck(pass, passRepeat);
-            if (cont.userExists(name)) {
-                showAlert(AlertType.WARNING, "Error de validacion", "", "Ya existe un usuario con el mismo nombre.");
-            } else {
-                if (cont.signUp(name, surname, pass, email, gender)) {
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainWindow.fxml"));
-                        Parent root = loader.load();
-                        MainWindowController mainCont = loader.getController();
-                        mainCont.setController(cont);
-                        mainCont.setUser(new User(textFieldName.getText(), textFieldSurname.getText(), passField.getText(),
-                                textFieldEmail.getText(), comboBoxGender.getSelectionModel().getSelectedItem()));
-                        Scene scene = new Scene(root);
-                        Stage stage = new Stage();
-                        stage.setTitle("Ventana Principal");
-                        stage.setScene(scene);
-                        stage.show();
-                        Stage current = (Stage) btnSignUp.getScene().getWindow();
-                        current.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+        if (name.trim().isEmpty() || surname.trim().isEmpty() || email.trim().isEmpty() || gender == null || pass.trim().isEmpty() || passRepeat.trim().isEmpty()) {
+            showAlert(AlertType.WARNING, "Error de validacion", "Faltan campos", "Por favor, rellena todos los campos.");
+        } else {
+            try {
+                emailFormatCheck(email);
+                passCheck(pass, passRepeat);
+                if (cont.userExists(name)) {
+                    showAlert(AlertType.WARNING, "Error de validacion", "", "Ya existe un usuario con el mismo nombre.");
                 } else {
-                    showAlert(AlertType.ERROR, "ERROR!", "", "Ha ocurrido un error al intentar registrarse.");
+                    if (cont.signUp(name, surname, pass, email, gender)) {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainWindow.fxml"));
+                            Parent root = loader.load();
+                            MainWindowController mainCont = loader.getController();
+                            mainCont.setController(cont);
+                            mainCont.setUser(new User(textFieldName.getText(), textFieldSurname.getText(), passField.getText(),
+                                    textFieldEmail.getText(), comboBoxGender.getSelectionModel().getSelectedItem()));
+                            Scene scene = new Scene(root);
+                            Stage stage = new Stage();
+                            stage.setTitle("Ventana Principal");
+                            stage.setScene(scene);
+                            stage.show();
+                            Stage current = (Stage) btnSignUp.getScene().getWindow();
+                            current.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        showAlert(AlertType.ERROR, "ERROR!", "", "Ha ocurrido un error al intentar registrarse.");
+                    }
                 }
+            } catch (EmailFormatException e) {
+                showAlert(AlertType.WARNING, "Error de validacion", "Formato Email invalido!", e.getMessage());
+            } catch (PasswordCheckFailException e1) {
+                showAlert(AlertType.WARNING, "Error de validacion", "", e1.getMessage());
             }
-        } catch (EmailFormatException e) {
-            showAlert(AlertType.WARNING, "Error de validacion", "Formato Email invalido!", e.getMessage());
-        } catch (PasswordCheckFailException e1) {
-            showAlert(AlertType.WARNING, "Error de validacion", "", e1.getMessage());
         }
     }
 
@@ -111,10 +123,12 @@ public class SignUpWindowController implements Initializable {
     }
 
     private void passCheck(String pass, String passRepeat) throws PasswordCheckFailException {
-        if (!pass.equals(passRepeat)) {
-            throw new PasswordCheckFailException();
-        } else if (pass.length() < 8) {
+        if (pass.length() < 8) {
             throw new PasswordCheckFailException("La contraseña debe tener al menos 8 caracteres.");
+        } else {
+            if (!pass.equals(passRepeat)) {
+                throw new PasswordCheckFailException();
+            }
         }
     }
 

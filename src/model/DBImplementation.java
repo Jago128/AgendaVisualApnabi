@@ -2,14 +2,25 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import static model.HibernateSession.getSessionFactory;
 import org.hibernate.*;
 import org.hibernate.query.Query;
 
+/**
+ *
+ * @author Jago128
+ */
 public class DBImplementation implements AgendaDAO {
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     */
     @Override
     public Profile login(String username, String password) {
-        Session session = HibernateSession.getSessionFactory().openSession();
+        Session session = getSessionFactory().openSession();
 
         try {
             String hqlUser = "FROM User u WHERE u.username = :username AND u.password = :password";
@@ -45,9 +56,18 @@ public class DBImplementation implements AgendaDAO {
         return null;
     }
 
+    /**
+     *
+     * @param username
+     * @param surname
+     * @param password
+     * @param email
+     * @param gender
+     * @return
+     */
     @Override
     public boolean signUp(String username, String surname, String password, String email, Gender gender) {
-        Session session = HibernateSession.getSessionFactory().openSession();
+        Session session = getSessionFactory().openSession();
         Transaction transaction = null;
 
         try {
@@ -91,9 +111,14 @@ public class DBImplementation implements AgendaDAO {
         }
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
     @Override
     public boolean userExists(String username) {
-        Session session = HibernateSession.getSessionFactory().openSession();
+        Session session = getSessionFactory().openSession();
 
         try {
             String hql = "SELECT COUNT(p) FROM Profile p WHERE p.username = :username";
@@ -113,9 +138,14 @@ public class DBImplementation implements AgendaDAO {
         }
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
     @Override
     public User getUser(String username) {
-        Session session = HibernateSession.getSessionFactory().openSession();
+        Session session = getSessionFactory().openSession();
 
         try {
             String hql = "FROM User u WHERE u.username = :username";
@@ -134,9 +164,18 @@ public class DBImplementation implements AgendaDAO {
         }
     }
 
+    /**
+     *
+     * @param username
+     * @param surname
+     * @param password
+     * @param email
+     * @param currentAccount
+     * @return
+     */
     @Override
     public boolean createAdmin(String username, String surname, String password, String email, String currentAccount) {
-        Session session = HibernateSession.getSessionFactory().openSession();
+        Session session = getSessionFactory().openSession();
         Transaction transaction = null;
 
         try {
@@ -179,9 +218,18 @@ public class DBImplementation implements AgendaDAO {
         }
     }
 
+    /**
+     *
+     * @param username
+     * @param surname
+     * @param password
+     * @param email
+     * @param gender
+     * @return
+     */
     @Override
     public boolean modifyAcc(String username, String surname, String password, String email, Gender gender) {
-        Session session = HibernateSession.getSessionFactory().openSession();
+        Session session = getSessionFactory().openSession();
         Transaction transaction = null;
 
         try {
@@ -224,9 +272,15 @@ public class DBImplementation implements AgendaDAO {
         }
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     */
     @Override
     public boolean deleteAcc(String username, String password) {
-        Session session = HibernateSession.getSessionFactory().openSession();
+        Session session = getSessionFactory().openSession();
         Transaction transaction = null;
 
         try {
@@ -268,13 +322,17 @@ public class DBImplementation implements AgendaDAO {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<Rutina> getRoutines() {
-        Session session = HibernateSession.getSessionFactory().openSession();
+        Session session = getSessionFactory().openSession();
         List<Rutina> routines = new ArrayList<>();
 
         try {
-            String hql = "FROM Rutina r ORDER BY r.name ASC";
+            String hql = "FROM Rutina r ORDER BY r.title ASC";
             Query<Rutina> query = session.createQuery(hql, Rutina.class);
 
             routines = query.getResultList();
@@ -290,10 +348,47 @@ public class DBImplementation implements AgendaDAO {
         }
         return routines;
     }
-
+    
+    /**
+     *
+     * @param title
+     * @param person
+     * @return
+     */
     @Override
-    public boolean addRoutine(String title, String person, String instruction) {
-        Session session = HibernateSession.getSessionFactory().openSession();
+    public boolean routineExists(String title, String person) {
+        Session session = getSessionFactory().openSession();
+
+        try {
+            String hql = "SELECT COUNT(p) FROM Rutina r WHERE r.title = :title AND r.person = :person";
+            Query<Long> query = session.createQuery(hql, Long.class);
+            query.setParameter("title", title);
+            query.setParameter("person", person);
+
+            Long count = query.uniqueResult();
+            return count > 0;
+
+        } catch (Exception e) {
+            System.out.println("Error de base de datos al intentar comprobar la existencia una rutina: " + e.getMessage());
+            return false;
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    /**
+     *
+     * @param title
+     * @param person
+     * @param instruction
+     * @param user
+     * @return
+     */
+    @Override
+    public boolean addRoutine(String title, String person, String instruction, User user) {
+        Session session = getSessionFactory().openSession();
         Transaction transaction = null;
 
         try {
@@ -301,7 +396,7 @@ public class DBImplementation implements AgendaDAO {
 
             String checkHql = "SELECT COUNT(r) FROM Rutina r WHERE r.title = :title AND r.person = :person";
             Query<Long> checkQuery = session.createQuery(checkHql, Long.class);
-            checkQuery.setParameter("name", title);
+            checkQuery.setParameter("title", title);
             checkQuery.setParameter("person", person);
             Long count = checkQuery.uniqueResult();
 
@@ -310,7 +405,7 @@ public class DBImplementation implements AgendaDAO {
                 return false;
             }
 
-            Rutina routine = new Rutina(title, person, instruction);
+            Rutina routine = new Rutina(title, person, instruction, user);
 
             session.save(routine);
             transaction.commit();
@@ -332,9 +427,14 @@ public class DBImplementation implements AgendaDAO {
         }
     }
 
+    /**
+     *
+     * @param routine
+     * @return
+     */
     @Override
     public boolean modifyRoutine(Rutina routine) {
-        Session session = HibernateSession.getSessionFactory().openSession();
+        Session session = getSessionFactory().openSession();
         Transaction transaction = null;
 
         try {
@@ -359,9 +459,14 @@ public class DBImplementation implements AgendaDAO {
         }
     }
 
+    /**
+     *
+     * @param routine
+     * @return
+     */
     @Override
     public boolean deleteRoutine(Rutina routine) {
-        Session session = HibernateSession.getSessionFactory().openSession();
+        Session session = getSessionFactory().openSession();
         Transaction transaction = null;
 
         try {

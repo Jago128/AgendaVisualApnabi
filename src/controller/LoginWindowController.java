@@ -11,16 +11,20 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.Profile;
 
+/**
+ *
+ * @author Jago128
+ */
 public class LoginWindowController implements Initializable {
 
     @FXML
     private TextField textfieldName;
 
     @FXML
-    private PasswordField passwordField;
+    private PasswordField passField;
 
     @FXML
-    private TextField passwordFieldVisible;
+    private TextField passFieldVisible;
 
     @FXML
     private CheckBox cbShowPass;
@@ -34,25 +38,23 @@ public class LoginWindowController implements Initializable {
     @FXML
     private Button btnExit;
 
-    private Controller cont;
+    private final Controller cont = new Controller();
 
     @FXML
     private void showPass(ActionEvent event) {
         if (cbShowPass.isSelected()) {
-            passwordFieldVisible.setText(passwordField.getText());
-            passwordField.setVisible(false);
-            passwordFieldVisible.setVisible(true);
+            passField.setVisible(false);
+            passFieldVisible.setVisible(true);
         } else {
-            passwordField.setText(passwordFieldVisible.getText());
-            passwordFieldVisible.setVisible(false);
-            passwordField.setVisible(true);
+            passFieldVisible.setVisible(false);
+            passField.setVisible(true);
         }
     }
 
     @FXML
     private void login(ActionEvent event) {
         String username = textfieldName.getText();
-        String password = passwordField.getText();
+        String password = passField.getText();
         if (username.isEmpty() || password.isEmpty()) {
             showAlert(AlertType.ERROR, "Error de validacion", "Faltan campos", "Por favor, rellena todos los campos.");
         } else {
@@ -62,8 +64,9 @@ public class LoginWindowController implements Initializable {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainWindow.fxml"));
                     Parent root = loader.load();
                     MainWindowController mainCont = loader.getController();
-                    mainCont.setUser(profile);
                     mainCont.setController(cont);
+                    mainCont.setUser(profile);
+                    mainCont.setUpList();
                     Stage stage = new Stage();
                     stage.setTitle("Ventana Principal");
                     stage.setScene(new Scene(root));
@@ -118,6 +121,7 @@ public class LoginWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cont = new Controller();
+        passField.textProperty().addListener((observable, oldVal, newVal) -> passFieldVisible.setText(newVal));
+        passFieldVisible.textProperty().addListener((observable, oldVal, newVal) -> passField.setText(newVal));
     }
 }

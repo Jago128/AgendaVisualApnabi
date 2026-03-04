@@ -7,7 +7,12 @@ import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import model.*;
 
+/**
+ *
+ * @author Jago128
+ */
 public class AddWindowController implements Initializable {
 
     @FXML
@@ -18,7 +23,7 @@ public class AddWindowController implements Initializable {
 
     @FXML
     private TextArea textAreaInstruction;
-
+    
     @FXML
     private Button btnAdd;
 
@@ -27,15 +32,32 @@ public class AddWindowController implements Initializable {
 
     private Controller cont;
     private MainWindowController mainCont;
+    private Profile user;
 
+    /**
+     *
+     * @param cont
+     */
     public void setController(Controller cont) {
         this.cont = cont;
     }
 
+    /**
+     *
+     * @param profile
+     */
+    public void setUser(Profile profile) {
+        this.user = profile;
+    }
+
+    /**
+     *
+     * @param mainCont
+     */
     public void setMainWindowController(MainWindowController mainCont) {
         this.mainCont = mainCont;
     }
-
+    
     @FXML
     private void add(ActionEvent event) {
         String title = textFieldTitle.getText();
@@ -45,24 +67,26 @@ public class AddWindowController implements Initializable {
         if (title == null || title.trim().isEmpty() || instruction == null || instruction.trim().isEmpty()) {
             showAlert(AlertType.ERROR, "Error de validacion", "Faltan campos", "Por favor, rellena todos los campos.");
         } else {
-            boolean result = cont.addRoutine(title, person, instruction);
-            if (result) {
-                Alert alert = showAlert(AlertType.CONFIRMATION, "Rutina añadida correctamente",
-                        "La rutina con el titulo " + title + " ha sido añadida correctamente.", "¿Quieres añadir mas rutinas?");
-                mainCont.loadAllGames();
-                if (alert.getResult().equals(ButtonType.OK)) {
-                    textFieldTitle.clear();
-                    textFieldPerson.clear();
-                    textAreaInstruction.clear();
-                } else if (alert.getResult().equals(ButtonType.CANCEL)) {
-                    Stage stage = (Stage) btnAdd.getScene().getWindow();
-                    stage.close();
-                }
-
+            if (cont.routineExists(title, person)) {
+                showAlert(AlertType.WARNING, "Error de validacion", "", "Ya existe una rutina con el mismo titulo para la misma persona.");
             } else {
-                showAlert(AlertType.ERROR, "ERROR", "",
-                        "Ha occurrido un error al añadir la rutina. Puede que ya exista en la base de datos una rutina con el mismo titulo para la misma persona.");
+                if (cont.addRoutine(title, person, instruction, (User) user)) {
+                    mainCont.loadAllRoutines();
+                    Alert alert = showAlert(AlertType.CONFIRMATION, "Rutina añadida correctamente",
+                            "La rutina con el titulo " + title + " ha sido añadida correctamente.", "¿Quieres añadir mas rutinas?");
+                    if (alert.getResult().equals(ButtonType.OK)) {
+                        textFieldTitle.clear();
+                        textFieldPerson.clear();
+                        textAreaInstruction.clear();
+                    } else if (alert.getResult().equals(ButtonType.CANCEL)) {
+                        Stage stage = (Stage) btnAdd.getScene().getWindow();
+                        stage.close();
+                    }
+                } else {
+                    showAlert(AlertType.ERROR, "ERROR", "", "Ha occurrido un error al añadir la rutina.");
+                }
             }
+
         }
     }
 
@@ -92,5 +116,4 @@ public class AddWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
-
 }

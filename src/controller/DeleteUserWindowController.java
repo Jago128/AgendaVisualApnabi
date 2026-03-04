@@ -11,16 +11,20 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.Profile;
 
+/**
+ *
+ * @author Jago128
+ */
 public class DeleteUserWindowController implements Initializable {
 
     @FXML
     private Label labelUsername;
 
     @FXML
-    private PasswordField passwordField;
+    private PasswordField passField;
 
     @FXML
-    private TextField passwordFieldVisible;
+    private TextField passFieldVisible;
 
     @FXML
     private CheckBox cbShowPass;
@@ -35,15 +39,27 @@ public class DeleteUserWindowController implements Initializable {
     private Profile user;
     private Stage main;
 
+    /**
+     *
+     * @param cont
+     */
     public void setController(Controller cont) {
         this.cont = cont;
     }
 
+    /**
+     *
+     * @param profile
+     */
     public void setUser(Profile profile) {
         this.user = profile;
         labelUsername.setText(user.getUsername());
     }
 
+    /**
+     *
+     * @param main
+     */
     public void setMainStage(Stage main) {
         this.main = main;
     }
@@ -51,44 +67,41 @@ public class DeleteUserWindowController implements Initializable {
     @FXML
     private void showPass(ActionEvent event) {
         if (cbShowPass.isSelected()) {
-            passwordFieldVisible.setText(passwordField.getText());
-            passwordField.setVisible(false);
-            passwordFieldVisible.setVisible(true);
+            passField.setVisible(false);
+            passFieldVisible.setVisible(true);
         } else {
-            passwordField.setText(passwordFieldVisible.getText());
-            passwordFieldVisible.setVisible(false);
-            passwordField.setVisible(true);
+            passFieldVisible.setVisible(false);
+            passField.setVisible(true);
         }
     }
 
     @FXML
     private void delete(ActionEvent event) {
-        if (passwordField.getText().isEmpty()) {
+        String username = labelUsername.getText();
+        String password = passField.getText();
+
+        if (passField.getText().isEmpty()) {
             showAlert(AlertType.WARNING, "ERROR", "Conreseña requerida", "Introduce tu contraseña para borrar tu cuenta.");
         } else {
-            if (cont.login(user.getUsername(), passwordField.getText()) == null) {
-                showAlert(AlertType.WARNING, "Error de validacion", "", "La contraseña introducida es incorrecta.");
-            } else {
-                Alert warning = showAlert(AlertType.CONFIRMATION, "AVISO", "¿Estas seguro de que quieres borrar tu cuenta?", "Elija una opcion.");
-                if (warning.getResult().equals(ButtonType.OK)) {
-                    if (cont.deleteAcc(user.getUsername(), user.getPassword())) {
-                        showAlert(AlertType.INFORMATION, "Cuenta eliminada correctamente", "", "Tu cuenta ha sido eliminada correctamente.");
-                        try {
-                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
-                            Parent root = fxmlLoader.load();
-                            Stage stage = new Stage();
-                            stage.setTitle("Ventana Login");
-                            stage.setScene(new Scene(root));
-                            stage.show();
-                            Stage currentStage = (Stage) delete.getScene().getWindow();
-                            main.close();
-                            currentStage.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        showAlert(AlertType.ERROR, "ERROR", "Cuenta no encontrada", "No se ha encontrado la cuenta.");
+            Alert warning = showAlert(AlertType.CONFIRMATION, "AVISO", "¿Estas seguro de que quieres borrar tu cuenta?", "Elija una opcion.");
+            if (warning.getResult().equals(ButtonType.OK)) {
+                if (cont.deleteAcc(username, password)) {
+                    showAlert(AlertType.INFORMATION, "Cuenta eliminada correctamente", "", "Tu cuenta ha sido eliminada correctamente.");
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
+                        Parent root = fxmlLoader.load();
+                        Stage stage = new Stage();
+                        stage.setTitle("Ventana Login");
+                        stage.setScene(new Scene(root));
+                        stage.show();
+                        Stage currentStage = (Stage) delete.getScene().getWindow();
+                        main.close();
+                        currentStage.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                } else {
+                    showAlert(AlertType.ERROR, "Error de validacion", "", "La contraseña introducida es incorrecta.");
                 }
             }
         }
@@ -119,5 +132,7 @@ public class DeleteUserWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        passField.textProperty().addListener((observable, oldVal, newVal) -> passFieldVisible.setText(newVal));
+        passFieldVisible.textProperty().addListener((observable, oldVal, newVal) -> passField.setText(newVal));
     }
 }

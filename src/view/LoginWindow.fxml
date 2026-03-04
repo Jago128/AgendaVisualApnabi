@@ -18,9 +18,9 @@
       </Label>
       <Label layoutX="74.0" layoutY="86.0" prefHeight="26.0" prefWidth="68.0" text="Nombre:" />
       <TextField fx:id="textfieldName" layoutX="147.0" layoutY="86.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu nombre" />
-      <Label layoutX="64.0" layoutY="122.0" prefHeight="26.0" prefWidth="80.0" text="Contraseña:" />
-      <PasswordField fx:id="passwordField" layoutX="147.0" layoutY="122.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu contraseña" />
-      <TextField fx:id="passwordFieldVisible" layoutX="147.0" layoutY="122.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu contraseña" visible="false" />
+      <Label layoutX="60.0" layoutY="122.0" prefHeight="26.0" prefWidth="80.0" text="Contraseña:" />
+      <PasswordField fx:id="passField" layoutX="147.0" layoutY="122.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu contraseña" />
+      <TextField fx:id="passFieldVisible" layoutX="147.0" layoutY="122.0" prefHeight="26.0" prefWidth="187.0" promptText="Introduce tu contraseña" visible="false" />
       <CheckBox fx:id="cbShowPass" layoutX="126.0" layoutY="155.0" mnemonicParsing="false" onAction="#showPass" prefHeight="34.0" prefWidth="171.0" text="Mostrar contraseña">
          <font>
             <Font size="14.0" />

@@ -8,6 +8,10 @@ import javafx.stage.Stage;
 import model.*;
 import org.hibernate.*;
 
+/**
+ *
+ * @author Jago128
+ */
 public class Main extends Application {
 
     private static void CreateTableHibernate() {
@@ -45,6 +49,10 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         CreateTableHibernate();
         launch(args);

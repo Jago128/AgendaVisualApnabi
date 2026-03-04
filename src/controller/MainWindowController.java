@@ -9,9 +9,14 @@ import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.*;
 import model.*;
 
+/**
+ *
+ * @author Jago128
+ */
 public class MainWindowController implements Initializable {
 
     @FXML
@@ -58,10 +63,27 @@ public class MainWindowController implements Initializable {
     private ObservableList<Rutina> routines;
     private Rutina selected;
 
+    /**
+     *
+     * @param cont
+     */
     public void setController(Controller cont) {
         this.cont = cont;
     }
 
+    /**
+     *
+     */
+    public void setUpList() {
+        routines = FXCollections.observableArrayList();
+        routines.setAll(cont.getRoutines());
+        tableAgenda.setItems(routines);
+    }
+
+    /**
+     *
+     * @param profile
+     */
     public void setUser(Profile profile) {
         this.user = profile;
         userMenu.setText(user.getUsername());
@@ -69,21 +91,29 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        routines = FXCollections.observableArrayList();
-        routines.setAll(cont.getRoutines());
-
+        cont = new Controller();
+        configureTableColumns();
+        setUpList();
         tableAgenda.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> getSelectedTableItem()
         );
     }
 
-    public void loadAllGames() {
+    /**
+     *
+     */
+    public void loadAllRoutines() {
         routines.setAll(cont.getRoutines());
-        tableAgenda.setItems(routines);
     }
 
     private void getSelectedTableItem() {
         selected = selected = tableAgenda.getSelectionModel().getSelectedItem();
+    }
+
+    private void configureTableColumns() {
+        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colPersona.setCellValueFactory(new PropertyValueFactory<>("person"));
+        colInstruction.setCellValueFactory(new PropertyValueFactory<>("instruction"));
     }
 
     @FXML
@@ -94,7 +124,6 @@ public class MainWindowController implements Initializable {
     @FXML
     private void modifyUser(ActionEvent event) {
         try {
-            //Change to non-modal and add exit btn to other window
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserConfigWindow.fxml"));
             Parent root = loader.load();
             UserConfigWindowController userConfigCont = loader.getController();
@@ -104,7 +133,7 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Ventana Configuracion Usuario");
             stage.setScene(scene);
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+            stage.initOwner(btnModify.getScene().getWindow());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,10 +143,11 @@ public class MainWindowController implements Initializable {
     @FXML
     private void deleteAcc(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/DeleteUserWindowController.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/DeleteUserWindow.fxml"));
             Parent root = loader.load();
             DeleteUserWindowController delCont = loader.getController();
             delCont.setController(cont);
+            delCont.setUser(user);
             Stage current = (Stage) btnDelete.getScene().getWindow();
             delCont.setMainStage(current);
             Scene scene = new Scene(root);
@@ -125,7 +155,7 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Ventana Borrar Cuenta");
             stage.setScene(scene);
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+            stage.initOwner(btnDelete.getScene().getWindow());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -156,6 +186,7 @@ public class MainWindowController implements Initializable {
             Parent root = loader.load();
             AddWindowController addCont = loader.getController();
             addCont.setController(cont);
+            addCont.setUser(user);
             addCont.setMainWindowController(this);
             Scene scene = new Scene(root);
             Stage stage = new Stage();
@@ -171,20 +202,27 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void modify(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ModifyWindow.fxml"));
-            Parent root = loader.load();
-            ModifyWindowController modifyCont = loader.getController();
-            modifyCont.setController(cont);
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setTitle("Ventana Modificar");
-            stage.setScene(scene);
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (selected == null) {
+            showAlert(AlertType.WARNING, "ERROR!", "¡Sin seleccion!", "Selecciona una rutina antes de usar esta funcion.");
+        } else {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ModifyWindow.fxml"));
+                Parent root = loader.load();
+                ModifyWindowController modifyCont = loader.getController();
+                modifyCont.setController(cont);
+                modifyCont.setUser(user);
+                modifyCont.setMainWindowController(this);
+                modifyCont.setRoutineToModify(selected);
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                stage.setTitle("Ventana Modificar");
+                stage.setScene(scene);
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -198,6 +236,7 @@ public class MainWindowController implements Initializable {
             if (warning.getResult().equals(ButtonType.OK)) {
                 if (cont.deleteRoutine(selected)) {
                     showAlert(AlertType.INFORMATION, "Rutina eliminada", "", "La rutina con titulo " + selected.getTitle() + " eliminada correctamente.");
+                    loadAllRoutines();
                 } else {
                     showAlert(AlertType.ERROR, "ERROR", "Rutina no encontrada", "No se ha encontrado la rutina.");
                 }
