@@ -68,7 +68,7 @@ public abstract class Profile implements Serializable {
     /**
      * Setter for profile ID.
      *
-     * @param userCode The profile ID.
+     * @param userCode The new profile ID.
      */
     public void setUserCode(int userCode) {
         this.userCode = userCode;
@@ -86,7 +86,7 @@ public abstract class Profile implements Serializable {
     /**
      * Setter for profile username.
      *
-     * @param username The profile new username.
+     * @param username The new profile username.
      */
     public void setUsername(String username) {
         this.username = username;
@@ -104,7 +104,7 @@ public abstract class Profile implements Serializable {
     /**
      * Setter for profile surname.
      *
-     * @param surname The profile new surname.
+     * @param surname The new profile surname.
      */
     public void setSurname(String surname) {
         this.surname = surname;
@@ -122,7 +122,7 @@ public abstract class Profile implements Serializable {
     /**
      * Setter for profile password.
      *
-     * @param password The profile new pasword.
+     * @param password The new profile pasword.
      */
     public void setPassword(String password) {
         this.password = password;
@@ -140,7 +140,7 @@ public abstract class Profile implements Serializable {
     /**
      * Setter for profile email.
      *
-     * @param email The profile new email.
+     * @param email The new profile email.
      */
     public void setEmail(String email) {
         this.email = email;

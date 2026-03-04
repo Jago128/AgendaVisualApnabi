@@ -60,24 +60,24 @@ public class User extends Profile {
     }
 
     /**
-     *
-     * @return
+     * Getter for Routine list.
+     * @return The routine list.
      */
     public List<Routine> getRoutines() {
         return routines;
     }
 
     /**
-     *
-     * @param routines
+     * Setter for Routine list.
+     * @param routines The new routine list.
      */
     public void setRoutines(List<Routine> routines) {
         this.routines = routines;
     }
 
     /**
-     *
-     * @param routine
+     * Hibernate method to add new routine to list.
+     * @param routine The new routine to add.
      */
     public void addRoutine(Routine routine) {
         routines.add(routine);
@@ -85,8 +85,8 @@ public class User extends Profile {
     }
 
     /**
-     *
-     * @return
+     * ToString method.
+     * @return User info.
      */
     @Override
     public String toString() {
