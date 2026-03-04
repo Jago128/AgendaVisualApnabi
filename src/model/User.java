@@ -45,6 +45,7 @@ public class User extends Profile {
 
     /**
      * Getter for user gender.
+     *
      * @return The user gender.
      */
     public Gender getGender() {
@@ -53,6 +54,7 @@ public class User extends Profile {
 
     /**
      * Setter for user gender.
+     *
      * @param gender The new user gender.
      */
     public void setGender(Gender gender) {
@@ -61,6 +63,7 @@ public class User extends Profile {
 
     /**
      * Getter for Routine list.
+     *
      * @return The routine list.
      */
     public List<Routine> getRoutines() {
@@ -69,6 +72,7 @@ public class User extends Profile {
 
     /**
      * Setter for Routine list.
+     *
      * @param routines The new routine list.
      */
     public void setRoutines(List<Routine> routines) {
@@ -77,6 +81,7 @@ public class User extends Profile {
 
     /**
      * Hibernate method to add new routine to list.
+     *
      * @param routine The new routine to add.
      */
     public void addRoutine(Routine routine) {
@@ -86,7 +91,8 @@ public class User extends Profile {
 
     /**
      * ToString method.
-     * @return User info.
+     *
+     * @return User info.+*
      */
     @Override
     public String toString() {

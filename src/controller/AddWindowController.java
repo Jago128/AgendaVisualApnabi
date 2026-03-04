@@ -95,7 +95,6 @@ public class AddWindowController implements Initializable {
                     showAlert(AlertType.ERROR, "ERROR", "", "Ha occurrido un error al añadir la rutina.");
                 }
             }
-
         }
     }
 
