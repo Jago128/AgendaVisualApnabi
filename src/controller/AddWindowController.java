@@ -1,16 +1,9 @@
 package controller;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
 import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
@@ -90,6 +83,7 @@ public class AddWindowController implements Initializable {
 
     @FXML
     private void selectImages(ActionEvent event) {
+        savedFiles.clear();
         FileChooser selection = new FileChooser();
         selection.setInitialDirectory(new File(System.getProperty("user.home")));
         selection.getExtensionFilters().addAll(

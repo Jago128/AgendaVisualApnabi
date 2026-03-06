@@ -1,16 +1,16 @@
 package controller;
 
-import java.io.File;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.stage.*;
 import javax.imageio.ImageIO;
 import model.*;
 
@@ -44,12 +44,17 @@ public class ModifyWindowController implements Initializable {
 
     @FXML
     private Hyperlink link;
+    
+    @FXML
+    private ListView<Image> listImages;
+
 
     private Controller cont;
     private Routine routine;
     private MainWindowController mainCont;
     private HostServices hostServices;
-
+    private List<File> savedFiles;
+    
     public void setHostServices(HostServices hostServices) {
         this.hostServices = hostServices;
     }
@@ -84,16 +89,40 @@ public class ModifyWindowController implements Initializable {
 
     @FXML
     private void selectImages(ActionEvent event) {
+        savedFiles.clear();
         FileChooser selection = new FileChooser();
-        selection.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", ImageIO.getReaderFileSuffixes()));
+        selection.setInitialDirectory(new File(System.getProperty("user.home")));
+        selection.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Images", "*.jpeg;*.jpg;*.png"),
+                new FileChooser.ExtensionFilter("JPEG", "*.jpeg"),
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("PNG", "*.png")
+        );
         List<File> files = selection.showOpenMultipleDialog(imageSelector.getScene().getWindow());
         if (files != null) {
             StringBuilder fileString = new StringBuilder("Imagenes seleccionadas: ");
+            BufferedImage image;
             for (int i = 0; i < files.size(); i++) {
-                if (i != files.size() - 1) {
-                    fileString.append(files.get(i).getName()).append(", ");
-                } else {
-                    fileString.append(files.get(i).getName());
+                File img = new File("./src/img", files.get(i).getName());
+                if (!img.exists()) {
+                    img.getParentFile().mkdirs();
+                }
+
+                try {
+                    if (i != files.size() - 1) {
+                        image = ImageIO.read(files.get(i).getAbsoluteFile());
+                        ImageIO.write(image, "png", img);
+                        fileString.append(files.get(i).getName()).append(", ");
+                        files.add(img);
+                    } else {
+                        image = ImageIO.read(files.get(i));
+                        ImageIO.write(image, "png", img);
+                        fileString.append(files.get(i).getName());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showAlert(AlertType.ERROR, "ERROR", "", "Ha ocurrido un error al leer las imagenes.");
+                    files.clear();
                 }
             }
             labelFiles.setText(fileString.toString());
@@ -184,5 +213,7 @@ public class ModifyWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        savedFiles = new ArrayList<>();
+        
     }
 }
