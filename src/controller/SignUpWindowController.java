@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.*;
+import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.*;
@@ -15,7 +16,7 @@ import model.*;
 
 /**
  *
- * @author Jago128w
+ * @author Jago128
  */
 public class SignUpWindowController implements Initializable {
 
@@ -52,9 +53,15 @@ public class SignUpWindowController implements Initializable {
     @FXML
     private Button btnLogin;
 
-    private Controller cont;
     @FXML
     private Button btnExit;
+
+    private Controller cont;
+    private HostServices hostServices;
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices;
+    }
 
     /**
      * Sets up the app controller instance.
@@ -95,8 +102,8 @@ public class SignUpWindowController implements Initializable {
                             Parent root = loader.load();
                             MainWindowController mainCont = loader.getController();
                             mainCont.setController(cont);
-                            mainCont.setUser(new User(textFieldName.getText(), textFieldSurname.getText(), passField.getText(),
-                                    textFieldEmail.getText(), comboBoxGender.getSelectionModel().getSelectedItem()));
+                            mainCont.setUser(cont.login(name, pass));
+                            mainCont.setHostServices(hostServices);
                             Scene scene = new Scene(root);
                             Stage stage = new Stage();
                             stage.setTitle("Ventana Principal");

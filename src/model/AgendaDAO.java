@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -85,9 +86,10 @@ public interface AgendaDAO {
      * @param person The person associated to the routine.
      * @param instruction The instructions of the routine.
      * @param user The user who created the routine.
+     * @param files The list of images.
      * @return True if successful, false otherwise.
      */
-    public boolean addRoutine(String title, String person, String instruction, User user);
+    public boolean addRoutine(String title, String person, String instruction, User user, List<File> files);
     
     /**
      * Modifies a routine based off of the data in the given parameter.

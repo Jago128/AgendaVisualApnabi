@@ -1,12 +1,23 @@
 package controller;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
+import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Stage;
+import javafx.stage.*;
+import javax.imageio.ImageIO;
 import model.*;
 
 /**
@@ -23,6 +34,15 @@ public class AddWindowController implements Initializable {
     private TextField textFieldPerson;
 
     @FXML
+    private Label labelFiles;
+
+    @FXML
+    private Button imageSelector;
+
+    @FXML
+    private Hyperlink link;
+
+    @FXML
     private TextArea textAreaInstruction;
 
     @FXML
@@ -34,6 +54,12 @@ public class AddWindowController implements Initializable {
     private Controller cont;
     private MainWindowController mainCont;
     private Profile user;
+    private HostServices hostServices;
+    private List<File> savedFiles;
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices;
+    }
 
     /**
      * Sets up the app controller.
@@ -62,6 +88,52 @@ public class AddWindowController implements Initializable {
         this.mainCont = mainCont;
     }
 
+    @FXML
+    private void selectImages(ActionEvent event) {
+        FileChooser selection = new FileChooser();
+        selection.setInitialDirectory(new File(System.getProperty("user.home")));
+        selection.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Images", "*.jpeg;*.jpg;*.png"),
+                new FileChooser.ExtensionFilter("JPEG", "*.jpeg"),
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("PNG", "*.png")
+        );
+        List<File> files = selection.showOpenMultipleDialog(imageSelector.getScene().getWindow());
+        if (files != null) {
+            StringBuilder fileString = new StringBuilder("Imagenes seleccionadas: ");
+            BufferedImage image;
+            for (int i = 0; i < files.size(); i++) {
+                File img = new File("./src/img", files.get(i).getName());
+                if (!img.exists()) {
+                    img.getParentFile().mkdirs();
+                }
+
+                try {
+                    if (i != files.size() - 1) {
+                        image = ImageIO.read(files.get(i).getAbsoluteFile());
+                        ImageIO.write(image, "png", img);
+                        fileString.append(files.get(i).getName()).append(", ");
+                        files.add(img);
+                    } else {
+                        image = ImageIO.read(files.get(i));
+                        ImageIO.write(image, "png", img);
+                        fileString.append(files.get(i).getName());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showAlert(AlertType.ERROR, "ERROR", "", "Ha ocurrido un error al leer las imagenes.");
+                    files.clear();
+                }
+            }
+            labelFiles.setText(fileString.toString());
+        }
+    }
+
+    @FXML
+    private void openBrowser(ActionEvent event) {
+        hostServices.showDocument("https://beta.arasaac.org/pictograms/search");
+    }
+
     /**
      * Calls the database method to add a routine, with messages for success or failure. Method has checks for empty fields and duplicate prevention.
      *
@@ -79,7 +151,7 @@ public class AddWindowController implements Initializable {
             if (cont.routineExists(title, person)) {
                 showAlert(AlertType.WARNING, "Error de validacion", "", "Ya existe una rutina con el mismo titulo para la misma persona.");
             } else {
-                if (cont.addRoutine(title, person, instruction, (User) user)) {
+                if (cont.addRoutine(title, person, instruction, (User) user, savedFiles)) {
                     mainCont.loadAllRoutines();
                     Alert alert = showAlert(AlertType.CONFIRMATION, "Rutina añadida correctamente",
                             "La rutina con el titulo " + title + " ha sido añadida correctamente.", "¿Quieres añadir mas rutinas?");
@@ -107,6 +179,7 @@ public class AddWindowController implements Initializable {
      * @param content The content of the alert.
      * @return If the alert type is for confirmation, returns the alert, otherwise returns null.
      */
+
     private Alert showAlert(AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -137,5 +210,6 @@ public class AddWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        savedFiles = new ArrayList<>();
     }
 }

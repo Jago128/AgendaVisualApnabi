@@ -1,5 +1,6 @@
 package main;
 
+import controller.LoginWindowController;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -24,8 +25,9 @@ public class Main extends Application {
             Session session = sessionFactory.openSession();
             session.close();
 
+            //Debug, to remove later
             DBImplementation db = new DBImplementation();
-            boolean adminCreated = db.createAdmin(
+            boolean created = db.createAdmin(
                     "admin", // username
                     "System", // surname
                     "admin", // password
@@ -33,11 +35,20 @@ public class Main extends Application {
                     "CTA-ADMIN" // currentAccount
             );
 
-            if (adminCreated) {
+            if (created) {
                 System.out.println("Admin por defecto creado: admin");
             } else {
                 System.out.println("Admin 'admin' ya existe");
             }
+
+            created = db.signUp("e", "e", "12345678", "e@gmail.com", Gender.HOMBRE);
+
+            if (created) {
+                System.out.println("User por defecto creado: admin");
+            } else {
+                System.out.println("User 'e' ya existe");
+            }
+
         } catch (HibernateException e) {
             System.err.println("Error al crear tablas o admin: " + e.getMessage());
             System.exit(1);
@@ -52,7 +63,10 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/LoginWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginWindow.fxml"));
+        Parent root = loader.load();
+        LoginWindowController loginCont = loader.getController();
+        loginCont.setHostServices(getHostServices());
         Scene scene = new Scene(root);
         stage.setTitle("Ventana Login");
         stage.setScene(scene);

@@ -1,6 +1,8 @@
 package model;
 
+import java.io.File;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -10,6 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "ROUTINE_")
+@PrimaryKeyJoinColumn(name = "image_path", referencedColumnName = "routine_code")
 public class Routine implements Serializable {
 
     @Id
@@ -25,6 +28,12 @@ public class Routine implements Serializable {
 
     @Column(name = "instruction", nullable = false, length = 500)
     private String instruction;
+
+    @Transient
+    private List<File> images;
+
+    @OneToMany(mappedBy = "imagePaths", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ImagePaths> imagePaths;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", nullable = false, referencedColumnName = "user_code")
@@ -46,12 +55,14 @@ public class Routine implements Serializable {
      * @param title Routine title.
      * @param person Person associated with routine.
      * @param instruction Routine instructions.
+     * @param images Image file list.
      * @param user The user that created the routine.
      */
-    public Routine(String title, String person, String instruction, User user) {
+    public Routine(String title, String person, String instruction, List<File> images, User user) {
         this.title = title;
         this.person = person;
         this.instruction = instruction;
+        this.images = images;
         this.user = user;
     }
 
@@ -143,6 +154,37 @@ public class Routine implements Serializable {
      */
     public void setUser(User user) {
         this.user = user;
+    }
+
+    /**
+     * Getter for image list.
+     *
+     * @return The image list.
+     */
+    public List<File> getImages() {
+        return images;
+    }
+
+    /**
+     * Setter for image list.
+     *
+     * @param images The new image list.
+     */
+    public void setImages(List<File> images) {
+        this.images = images;
+    }
+
+    public List<ImagePaths> getImagePaths() {
+        return imagePaths;
+    }
+
+    public void setImagePaths(List<ImagePaths> imagePaths) {
+        this.imagePaths = imagePaths;
+    }
+
+    public void addFilePath(ImagePaths path) {
+        imagePaths.add(path);
+        path.setRoutine(this);
     }
 
     /**

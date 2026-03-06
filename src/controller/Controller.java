@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.util.List;
 import model.*;
 
@@ -9,7 +10,7 @@ import model.*;
  * @author Jago128
  */
 public class Controller {
-
+    
     AgendaDAO dao = new DBImplementation();
 
     /**
@@ -113,10 +114,11 @@ public class Controller {
      * @param person The person associated to the routine.
      * @param instruction The instructions of the routine.
      * @param user The user who created the routine.
+     * @param files The list of images.
      * @return True if successful, false otherwise.
      */
-    public boolean addRoutine(String title, String person, String instruction, User user) {
-        return dao.addRoutine(title, person, instruction, user);
+    public boolean addRoutine(String title, String person, String instruction, User user, List<File> files) {
+        return dao.addRoutine(title, person, instruction, user, files);
     }
 
     /**

@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.HostServices;
 import javafx.collections.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
@@ -63,6 +64,11 @@ public class MainWindowController implements Initializable {
     private Profile user;
     private ObservableList<Routine> routines;
     private Routine selected;
+    private HostServices hostServices;
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices;
+    }
 
     /**
      * Sets up the app controller instance.
@@ -217,6 +223,7 @@ public class MainWindowController implements Initializable {
             addCont.setController(cont);
             addCont.setUser(user);
             addCont.setMainWindowController(this);
+            addCont.setHostServices(hostServices);
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setTitle("Ventana Añadir");
@@ -244,7 +251,6 @@ public class MainWindowController implements Initializable {
                 Parent root = loader.load();
                 ModifyWindowController modifyCont = loader.getController();
                 modifyCont.setController(cont);
-                modifyCont.setUser(user);
                 modifyCont.setMainWindowController(this);
                 modifyCont.setRoutineToModify(selected);
                 Scene scene = new Scene(root);

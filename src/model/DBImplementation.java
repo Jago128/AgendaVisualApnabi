@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import static model.HibernateSession.getSessionFactory;
@@ -8,12 +9,14 @@ import org.hibernate.query.Query;
 
 /**
  * Implementation of the AgendaDAO interface, using the Hibernate ORM for all database operations.
+ *
  * @author Jago128
  */
 public class DBImplementation implements AgendaDAO {
 
     /**
      * Logs an user into the application if the username and password are correct.
+     *
      * @param username The username of the profile.
      * @param password The password of the profile.
      * @return The profile if successful, null otherwise.
@@ -58,6 +61,7 @@ public class DBImplementation implements AgendaDAO {
 
     /**
      * Signs up an user to the application.
+     *
      * @param username The new user's username.
      * @param surname The new user's surname.
      * @param password The new user's password.
@@ -113,6 +117,7 @@ public class DBImplementation implements AgendaDAO {
 
     /**
      * Searches for an user in the database, mainly for username duplicate checking.
+     *
      * @param username The username of the user to search for.
      * @return True if exists, false if it doesn't exist.
      */
@@ -140,6 +145,7 @@ public class DBImplementation implements AgendaDAO {
 
     /**
      * Creates an admin profile.
+     *
      * @param username The new user's username.
      * @param surname The new user's surname.
      * @param password The new user's password.
@@ -194,6 +200,7 @@ public class DBImplementation implements AgendaDAO {
 
     /**
      * Modifies an user based on the given parameters.
+     *
      * @param username The user's new username.
      * @param surname The user's new surname.
      * @param password The user's new password.
@@ -248,6 +255,7 @@ public class DBImplementation implements AgendaDAO {
 
     /**
      * Deletes an user from the database.
+     *
      * @param username The username of the user to be deleted.
      * @param password The password of the user to be deleted.
      * @return True if successful, false otherwise.
@@ -295,8 +303,10 @@ public class DBImplementation implements AgendaDAO {
             }
         }
     }
+
     /**
      * Gets all routines in the database.
+     *
      * @return The list of routines.
      */
     @Override
@@ -321,9 +331,10 @@ public class DBImplementation implements AgendaDAO {
         }
         return routines;
     }
-    
+
     /**
      * Checks if a routine associated to a person already exists.
+     *
      * @param title The title of the routine.
      * @param person The person associated to the routine.
      * @return True if exists, false if it doesn't exist.
@@ -353,16 +364,19 @@ public class DBImplementation implements AgendaDAO {
 
     /**
      * Adds a new routine to the database.
+     *
      * @param title The title of the routine.
      * @param person The person associated to the routine.
      * @param instruction The instructions of the routine.
      * @param user The user who created the routine.
+     * @param files The list of images.
      * @return True if successful, false otherwise.
      */
     @Override
-    public boolean addRoutine(String title, String person, String instruction, User user) {
+    public boolean addRoutine(String title, String person, String instruction, User user, List<File> files) {
         Session session = getSessionFactory().openSession();
         Transaction transaction = null;
+        List<ImagePaths> savedPaths = new ArrayList<>();
 
         try {
             transaction = session.beginTransaction();
@@ -378,8 +392,12 @@ public class DBImplementation implements AgendaDAO {
                 return false;
             }
 
-            Routine routine = new Routine(title, person, instruction, user);
+            Routine routine = new Routine(title, person, instruction, files, user);
+            for (File path : files) {
+                savedPaths.add(new ImagePaths(path.getCanonicalPath(), routine));
+            }
 
+            routine.setImagePaths(savedPaths);
             session.save(routine);
             transaction.commit();
 
@@ -402,6 +420,7 @@ public class DBImplementation implements AgendaDAO {
 
     /**
      * Modifies a routine based off of the data in the given parameter.
+     *
      * @param routine The routine to be modified.
      * @return True if successful, false otherwise.
      */
@@ -434,6 +453,7 @@ public class DBImplementation implements AgendaDAO {
 
     /**
      * Deletes a routine from the database.
+     *
      * @param routine The routine to be deleted.
      * @return True if successful, false otherwise.
      */

@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.*;
@@ -40,6 +41,11 @@ public class LoginWindowController implements Initializable {
     private Button btnExit;
 
     private final Controller cont = new Controller();
+    private HostServices hostServices;
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices;
+    }
 
     /**
      * Changes states of the visible and obscured password fields.
@@ -77,6 +83,7 @@ public class LoginWindowController implements Initializable {
                     MainWindowController mainCont = loader.getController();
                     mainCont.setController(cont);
                     mainCont.setUser(profile);
+                    mainCont.setHostServices(hostServices);
                     mainCont.setUpList();
                     Stage stage = new Stage();
                     stage.setTitle("Ventana Principal");
@@ -105,6 +112,7 @@ public class LoginWindowController implements Initializable {
             Parent root = loader.load();
             SignUpWindowController signUpCont = loader.getController();
             signUpCont.setController(cont);
+            signUpCont.setHostServices(hostServices);
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setTitle("Ventana Registro");

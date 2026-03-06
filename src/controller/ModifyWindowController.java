@@ -1,12 +1,17 @@
 package controller;
 
+import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 import model.*;
 
 /**
@@ -31,10 +36,23 @@ public class ModifyWindowController implements Initializable {
     @FXML
     private Button btnExit;
 
+    @FXML
+    private Button imageSelector;
+
+    @FXML
+    private Label labelFiles;
+
+    @FXML
+    private Hyperlink link;
+
     private Controller cont;
     private Routine routine;
-    private Profile user;
     private MainWindowController mainCont;
+    private HostServices hostServices;
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices;
+    }
 
     /**
      * Sets up the app controller instance.
@@ -43,15 +61,6 @@ public class ModifyWindowController implements Initializable {
      */
     public void setController(Controller cont) {
         this.cont = cont;
-    }
-
-    /**
-     * Sets up the user profile.
-     *
-     * @param profile The logged in user's profile.
-     */
-    public void setUser(Profile profile) {
-        this.user = profile;
     }
 
     /**
@@ -71,6 +80,29 @@ public class ModifyWindowController implements Initializable {
      */
     public void setMainWindowController(MainWindowController mainCont) {
         this.mainCont = mainCont;
+    }
+
+    @FXML
+    private void selectImages(ActionEvent event) {
+        FileChooser selection = new FileChooser();
+        selection.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", ImageIO.getReaderFileSuffixes()));
+        List<File> files = selection.showOpenMultipleDialog(imageSelector.getScene().getWindow());
+        if (files != null) {
+            StringBuilder fileString = new StringBuilder("Imagenes seleccionadas: ");
+            for (int i = 0; i < files.size(); i++) {
+                if (i != files.size() - 1) {
+                    fileString.append(files.get(i).getName()).append(", ");
+                } else {
+                    fileString.append(files.get(i).getName());
+                }
+            }
+            labelFiles.setText(fileString.toString());
+        }
+    }
+
+    @FXML
+    private void openBrowser(ActionEvent event) {
+        hostServices.showDocument("https://beta.arasaac.org/pictograms/search");
     }
 
     /**
@@ -102,7 +134,10 @@ public class ModifyWindowController implements Initializable {
                 if (cont.routineExists(title, person)) {
                     showAlert(AlertType.WARNING, "Error de validacion", "", "Ya existe una rutina con el mismo titulo para la misma persona.");
                 } else {
-                    if (cont.modifyRoutine(new Routine(title, person, instruction, (User) user))) {
+                    routine.setTitle(title);
+                    routine.setPerson(person);
+                    routine.setInstruction(instruction);
+                    if (cont.modifyRoutine(routine)) {
                         mainCont.loadAllRoutines();
                         showAlert(AlertType.INFORMATION, "Rutina " + title + " modificada correctamente",
                                 "", "La rutina con el titulo " + title + " ha sido modificada correctamente.");
