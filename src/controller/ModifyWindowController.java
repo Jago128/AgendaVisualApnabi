@@ -5,11 +5,14 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 import javafx.application.HostServices;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.*;
 import javax.imageio.ImageIO;
 import model.*;
@@ -44,17 +47,17 @@ public class ModifyWindowController implements Initializable {
 
     @FXML
     private Hyperlink link;
-    
+
     @FXML
     private ListView<Image> listImages;
-
 
     private Controller cont;
     private Routine routine;
     private MainWindowController mainCont;
     private HostServices hostServices;
     private List<File> savedFiles;
-    
+    private ObservableList<Image> images;
+
     public void setHostServices(HostServices hostServices) {
         this.hostServices = hostServices;
     }
@@ -114,10 +117,13 @@ public class ModifyWindowController implements Initializable {
                         ImageIO.write(image, "png", img);
                         fileString.append(files.get(i).getName()).append(", ");
                         files.add(img);
+                        images.add(new Image(img.getAbsolutePath()));
                     } else {
                         image = ImageIO.read(files.get(i));
                         ImageIO.write(image, "png", img);
                         fileString.append(files.get(i).getName());
+                        files.add(img);
+                        images.add(new Image(img.getAbsolutePath()));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -141,6 +147,7 @@ public class ModifyWindowController implements Initializable {
         textFieldTitle.setText(routine.getTitle());
         textFieldPerson.setText(routine.getPerson());
         textAreaInstruction.setText(routine.getInstruction());
+        
     }
 
     /**
@@ -214,6 +221,20 @@ public class ModifyWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         savedFiles = new ArrayList<>();
-        
+        images = FXCollections.observableArrayList();
+        listImages.setItems(images);
+        listImages.setCellFactory(param -> new ListCell<Image>() {
+            private ImageView imageView = new ImageView();
+
+            @Override
+            public void updateItem(Image image, boolean empty) {
+                super.updateItem(image, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(imageView);
+                }
+            }
+        });
     }
 }
