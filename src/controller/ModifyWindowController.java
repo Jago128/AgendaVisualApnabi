@@ -1,18 +1,16 @@
-package controller;
+    package controller;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
 import javafx.application.HostServices;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.collections.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.stage.*;
 import javax.imageio.ImageIO;
 import model.*;
@@ -82,6 +80,20 @@ public class ModifyWindowController implements Initializable {
     }
 
     /**
+     * Loads the routine's data into the fields.
+     */
+    private void loadData() {
+        textFieldTitle.setText(routine.getTitle());
+        textFieldPerson.setText(routine.getPerson());
+        textAreaInstruction.setText(routine.getInstruction());
+        List<ImagePaths> paths = routine.getImagePaths();
+        for (ImagePaths path : paths) {
+            savedFiles.add(new File(path.getFilePath()));
+            images.add(new Image(path.getFilePath()));
+        }
+    }
+
+    /**
      * Sets up the main window's FXML controller.
      *
      * @param mainCont The main window's FXML controller.
@@ -101,34 +113,34 @@ public class ModifyWindowController implements Initializable {
                 new FileChooser.ExtensionFilter("JPG", "*.jpg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png")
         );
-        List<File> files = selection.showOpenMultipleDialog(imageSelector.getScene().getWindow());
-        if (files != null) {
+        savedFiles = selection.showOpenMultipleDialog(imageSelector.getScene().getWindow());
+        if (savedFiles != null) {
             StringBuilder fileString = new StringBuilder("Imagenes seleccionadas: ");
             BufferedImage image;
-            for (int i = 0; i < files.size(); i++) {
-                File img = new File("./src/img", files.get(i).getName());
+            for (int i = 0; i < savedFiles.size(); i++) {
+                File img = new File("./src/img", savedFiles.get(i).getName());
                 if (!img.exists()) {
                     img.getParentFile().mkdirs();
                 }
 
                 try {
-                    if (i != files.size() - 1) {
-                        image = ImageIO.read(files.get(i).getAbsoluteFile());
+                    if (i != savedFiles.size() - 1) {
+                        image = ImageIO.read(savedFiles.get(i).getAbsoluteFile());
                         ImageIO.write(image, "png", img);
-                        fileString.append(files.get(i).getName()).append(", ");
-                        files.add(img);
-                        images.add(new Image(img.getAbsolutePath()));
+                        fileString.append(savedFiles.get(i).getName()).append(", ");
+                        savedFiles.add(img);
+                        images.add(new Image(img.toURI().toString(), true));
                     } else {
-                        image = ImageIO.read(files.get(i));
+                        image = ImageIO.read(savedFiles.get(i).getAbsoluteFile());
                         ImageIO.write(image, "png", img);
-                        fileString.append(files.get(i).getName());
-                        files.add(img);
-                        images.add(new Image(img.getAbsolutePath()));
+                        fileString.append(savedFiles.get(i).getName());
+                        savedFiles.add(img);
+                        images.add(new Image(img.toURI().toString(), true));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                     showAlert(AlertType.ERROR, "ERROR", "", "Ha ocurrido un error al leer las imagenes.");
-                    files.clear();
+                    savedFiles.clear();
                 }
             }
             labelFiles.setText(fileString.toString());
@@ -141,16 +153,6 @@ public class ModifyWindowController implements Initializable {
     }
 
     /**
-     * Loads the routine's data into the fields.
-     */
-    private void loadData() {
-        textFieldTitle.setText(routine.getTitle());
-        textFieldPerson.setText(routine.getPerson());
-        textAreaInstruction.setText(routine.getInstruction());
-        
-    }
-
-    /**
      * Calls the database method to modify the routine. Method has checks for empty fields and duplicate prevention, as well as making sure there's a change in any field.
      *
      * @param event The button click event.
@@ -160,6 +162,7 @@ public class ModifyWindowController implements Initializable {
         String title = textFieldTitle.getText();
         String person = textFieldPerson.getText();
         String instruction = textAreaInstruction.getText();
+        List<ImagePaths> savedPaths = new ArrayList<>();
 
         if (title == null || title.trim().isEmpty() || instruction == null || instruction.trim().isEmpty()) {
             showAlert(AlertType.WARNING, "Error de validacion", "Faltan campos", "Por favor, rellena todos los campos.");
@@ -173,6 +176,15 @@ public class ModifyWindowController implements Initializable {
                     routine.setTitle(title);
                     routine.setPerson(person);
                     routine.setInstruction(instruction);
+                    routine.setImages(savedFiles);
+                    for (File path : savedFiles) {
+                        try {
+                            savedPaths.add(new ImagePaths(path.getCanonicalPath(), routine));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    routine.setImagePaths(savedPaths);
                     if (cont.modifyRoutine(routine)) {
                         mainCont.loadAllRoutines();
                         showAlert(AlertType.INFORMATION, "Rutina " + title + " modificada correctamente",

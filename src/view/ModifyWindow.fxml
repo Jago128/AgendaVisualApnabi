@@ -20,7 +20,7 @@
       <TextField fx:id="textFieldTitle" layoutX="342.0" layoutY="59.0" />
       <Label alignment="CENTER_RIGHT" layoutX="213.0" layoutY="91.0" prefHeight="26.0" prefWidth="114.0" text="Nombre persona:" />
       <TextField fx:id="textFieldPerson" layoutX="342.0" layoutY="91.0" />
-      <Label fx:id="labelFiles" layoutX="12.0" layoutY="118.0" prefHeight="27.0" prefWidth="710.0" text="Imagenes seleccionadas:" />
+      <Label fx:id="labelFiles" layoutX="12.0" layoutY="118.0" prefHeight="27.0" prefWidth="710.0" text="Imagenes seleccionadas: (No hay ficheros seleccionados.)" />
       <Button fx:id="imageSelector" layoutX="219.0" layoutY="151.0" mnemonicParsing="false" onAction="#selectImages" prefHeight="35.0" prefWidth="150.0" text="Seleccionar imagenes" />
       <Hyperlink fx:id="link" alignment="CENTER" layoutX="381.0" layoutY="157.0" onAction="#openBrowser" prefHeight="27.0" prefWidth="106.0" text="ARASAAC" />
       <ListView fx:id="listImages" layoutX="5.0" layoutY="193.0" prefHeight="98.0" prefWidth="719.0" />

@@ -5,10 +5,14 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 import javafx.application.HostServices;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.*;
 import javax.imageio.ImageIO;
 import model.*;
@@ -44,11 +48,15 @@ public class AddWindowController implements Initializable {
     @FXML
     private Button btnExit;
 
+    @FXML
+    private ListView<Image> listImages;
+
     private Controller cont;
-    private MainWindowController mainCont;
     private Profile user;
+    private MainWindowController mainCont;
     private HostServices hostServices;
     private List<File> savedFiles;
+    private ObservableList<Image> images;
 
     public void setHostServices(HostServices hostServices) {
         this.hostServices = hostServices;
@@ -92,31 +100,35 @@ public class AddWindowController implements Initializable {
                 new FileChooser.ExtensionFilter("JPG", "*.jpg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png")
         );
-        List<File> files = selection.showOpenMultipleDialog(imageSelector.getScene().getWindow());
-        if (files != null) {
+        savedFiles.addAll(selection.showOpenMultipleDialog(imageSelector.getScene().getWindow()));
+        if (!savedFiles.isEmpty()) {
             StringBuilder fileString = new StringBuilder("Imagenes seleccionadas: ");
             BufferedImage image;
-            for (int i = 0; i < files.size(); i++) {
-                File img = new File("./src/img", files.get(i).getName());
+            for (int i = 0; i < savedFiles.size(); i++) {
+                File img = new File("./src/img", savedFiles.get(i).getName());
                 if (!img.exists()) {
                     img.getParentFile().mkdirs();
                 }
 
                 try {
-                    if (i != files.size() - 1) {
-                        image = ImageIO.read(files.get(i).getAbsoluteFile());
+                    if (i != savedFiles.size() - 1) {
+                        image = ImageIO.read(savedFiles.get(i).getAbsoluteFile());
                         ImageIO.write(image, "png", img);
-                        fileString.append(files.get(i).getName()).append(", ");
-                        files.add(img);
+                        fileString.append(savedFiles.get(i).getName()).append(", ");
+                        savedFiles.add(img);
+                        images.add(new Image(img.toURI().toString(), true));
+
                     } else {
-                        image = ImageIO.read(files.get(i));
+                        image = ImageIO.read(savedFiles.get(i).getAbsoluteFile());
                         ImageIO.write(image, "png", img);
-                        fileString.append(files.get(i).getName());
+                        fileString.append(savedFiles.get(i).getName());
+                        savedFiles.add(img);
+                        images.add(new Image(img.toURI().toString(), true));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                     showAlert(AlertType.ERROR, "ERROR", "", "Ha ocurrido un error al leer las imagenes.");
-                    files.clear();
+                    savedFiles.clear();
                 }
             }
             labelFiles.setText(fileString.toString());
@@ -173,7 +185,6 @@ public class AddWindowController implements Initializable {
      * @param content The content of the alert.
      * @return If the alert type is for confirmation, returns the alert, otherwise returns null.
      */
-
     private Alert showAlert(AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -205,5 +216,20 @@ public class AddWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         savedFiles = new ArrayList<>();
+        images = FXCollections.observableArrayList();
+        listImages.setItems(images);
+        listImages.setCellFactory(param -> new ListCell<Image>() {
+            private ImageView imageView = new ImageView();
+
+            @Override
+            public void updateItem(Image image, boolean empty) {
+                super.updateItem(image, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(imageView);
+                }
+            }
+        });
     }
 }

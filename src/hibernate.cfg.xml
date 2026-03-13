@@ -45,5 +45,6 @@
         <mapping class="model.User"/>
         <mapping class="model.Admin"/>
         <mapping class="model.Routine"/>
+        <mapping class="model.ImagePaths"/>
     </session-factory>
 </hibernate-configuration>

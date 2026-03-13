@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "ROUTINE_")
-@PrimaryKeyJoinColumn(name = "image_path", referencedColumnName = "routine_code")
+@PrimaryKeyJoinColumn(name = "routine_ImagePath", referencedColumnName = "routine_code")
 public class Routine implements Serializable {
 
     @Id
@@ -32,7 +32,7 @@ public class Routine implements Serializable {
     @Transient
     private List<File> images;
 
-    @OneToMany(mappedBy = "imagePaths", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ImagePaths> imagePaths;
 
     @ManyToOne(fetch = FetchType.LAZY)

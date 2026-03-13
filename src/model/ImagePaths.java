@@ -8,6 +8,8 @@ import javax.persistence.*;
 public class ImagePaths implements Serializable {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "path_id")
     private int pathId;
     
     @Column(name = "filePath", nullable = false, length = 999)
