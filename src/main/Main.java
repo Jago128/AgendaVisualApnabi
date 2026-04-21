@@ -44,7 +44,7 @@ public class Main extends Application {
             created = db.signUp("e", "e", "12345678", "e@gmail.com", Gender.HOMBRE);
 
             if (created) {
-                System.out.println("User por defecto creado: admin");
+                System.out.println("User por defecto creado: e");
             } else {
                 System.out.println("User 'e' ya existe");
             }

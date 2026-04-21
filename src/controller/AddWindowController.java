@@ -5,14 +5,11 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 import javafx.application.HostServices;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.*;
 import javax.imageio.ImageIO;
 import model.*;
@@ -56,7 +53,6 @@ public class AddWindowController implements Initializable {
     private MainWindowController mainCont;
     private HostServices hostServices;
     private List<File> savedFiles;
-    private ObservableList<Image> images;
 
     public void setHostServices(HostServices hostServices) {
         this.hostServices = hostServices;
@@ -100,37 +96,36 @@ public class AddWindowController implements Initializable {
                 new FileChooser.ExtensionFilter("JPG", "*.jpg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png")
         );
-        savedFiles.addAll(selection.showOpenMultipleDialog(imageSelector.getScene().getWindow()));
-        if (!savedFiles.isEmpty()) {
+        List <File> files = selection.showOpenMultipleDialog(imageSelector.getScene().getWindow());
+        if (!files.isEmpty()) {
             StringBuilder fileString = new StringBuilder("Imagenes seleccionadas: ");
             BufferedImage image;
-            for (int i = 0; i < savedFiles.size(); i++) {
-                File img = new File("./src/img", savedFiles.get(i).getName());
+            for (int i = 0; i < files.size(); i++) {
+                File img = new File("./src/img", files.get(i).getName());
                 if (!img.exists()) {
                     img.getParentFile().mkdirs();
                 }
 
                 try {
-                    if (i != savedFiles.size() - 1) {
-                        image = ImageIO.read(savedFiles.get(i).getAbsoluteFile());
+                    if (i != files.size() - 1) {
+                        image = ImageIO.read(files.get(i));
                         ImageIO.write(image, "png", img);
-                        fileString.append(savedFiles.get(i).getName()).append(", ");
-                        savedFiles.add(img);
-                        images.add(new Image(img.toURI().toString(), true));
+                        fileString.append(files.get(i).getName()).append(", ");
+                        files.add(img);
 
                     } else {
-                        image = ImageIO.read(savedFiles.get(i).getAbsoluteFile());
+                        image = ImageIO.read(files.get(i));
                         ImageIO.write(image, "png", img);
-                        fileString.append(savedFiles.get(i).getName());
-                        savedFiles.add(img);
-                        images.add(new Image(img.toURI().toString(), true));
+                        fileString.append(files.get(i).getName());
+                        files.add(img);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                     showAlert(AlertType.ERROR, "ERROR", "", "Ha ocurrido un error al leer las imagenes.");
-                    savedFiles.clear();
+                    files.clear();
                 }
             }
+            savedFiles.addAll(files);
             labelFiles.setText(fileString.toString());
         }
     }
@@ -216,20 +211,5 @@ public class AddWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         savedFiles = new ArrayList<>();
-        images = FXCollections.observableArrayList();
-        listImages.setItems(images);
-        listImages.setCellFactory(param -> new ListCell<Image>() {
-            private ImageView imageView = new ImageView();
-
-            @Override
-            public void updateItem(Image image, boolean empty) {
-                super.updateItem(image, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(imageView);
-                }
-            }
-        });
     }
 }
