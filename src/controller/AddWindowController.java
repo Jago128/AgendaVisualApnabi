@@ -97,7 +97,7 @@ public class AddWindowController implements Initializable {
                 new FileChooser.ExtensionFilter("PNG", "*.png")
         );
         List <File> files = selection.showOpenMultipleDialog(imageSelector.getScene().getWindow());
-        if (!files.isEmpty()) {
+        if (files != null && !files.isEmpty()) {
             StringBuilder fileString = new StringBuilder("Imagenes seleccionadas: ");
             BufferedImage image;
             for (int i = 0; i < files.size(); i++) {
@@ -111,13 +111,13 @@ public class AddWindowController implements Initializable {
                         image = ImageIO.read(files.get(i));
                         ImageIO.write(image, "png", img);
                         fileString.append(files.get(i).getName()).append(", ");
-                        files.add(img);
+                        savedFiles.add(img);
 
                     } else {
                         image = ImageIO.read(files.get(i));
                         ImageIO.write(image, "png", img);
                         fileString.append(files.get(i).getName());
-                        files.add(img);
+                        savedFiles.add(img);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -125,7 +125,6 @@ public class AddWindowController implements Initializable {
                     files.clear();
                 }
             }
-            savedFiles.addAll(files);
             labelFiles.setText(fileString.toString());
         }
     }

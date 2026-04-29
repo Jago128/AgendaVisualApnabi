@@ -126,13 +126,13 @@ public class ModifyWindowController implements Initializable {
                         image = ImageIO.read(files.get(i));
                         ImageIO.write(image, "png", img);
                         fileString.append(files.get(i).getName()).append(", ");
-                        files.add(img);
+                        savedFiles.add(img);
 
                     } else {
                         image = ImageIO.read(files.get(i));
                         ImageIO.write(image, "png", img);
                         fileString.append(files.get(i).getName());
-                        files.add(img);
+                        savedFiles.add(img);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -140,7 +140,6 @@ public class ModifyWindowController implements Initializable {
                     files.clear();
                 }
             }
-            savedFiles.addAll(files);
             labelFiles.setText(fileString.toString());
         }
     }

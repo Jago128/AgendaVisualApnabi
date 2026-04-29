@@ -27,8 +27,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </MenuButton>
-      <Button fx:id="tempBtn" layoutX="22.0" layoutY="71.0" mnemonicParsing="false" onAction="#debug" prefHeight="15.0" prefWidth="186.0" text="(DEBUG) Check API availability" />
-      <TableView fx:id="tableAgenda" layoutX="19.0" layoutY="119.0" prefHeight="316.0" prefWidth="636.0">
+      <TableView fx:id="tableAgenda" layoutX="19.0" layoutY="63.0" prefHeight="372.0" prefWidth="636.0">
         <columns>
           <TableColumn fx:id="colTitle" prefWidth="161.59997940063477" text="Titulo" />
             <TableColumn fx:id="colPersona" prefWidth="136.79995727539062" text="Persona" />
