@@ -121,7 +121,7 @@ public class MainWindowController implements Initializable {
      * Gets the currently selected table item.
      */
     private void getSelectedTableItem() {
-        selected = selected = tableAgenda.getSelectionModel().getSelectedItem();
+        selected = tableAgenda.getSelectionModel().getSelectedItem();
     }
 
     @FXML
